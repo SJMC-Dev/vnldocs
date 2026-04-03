@@ -28,3 +28,20 @@ Vanillang 关键字具有特殊用途，不可作用标识符，下面的表格�
 | `case`     | 用于在 switch 语句中匹配编译时常量值或子类的实例 | `case 1`、`case "Vanillang"`、`case BlockDisplay`、`case TextDisplay`                   |
 | `when`     | 用于匹配子类实例时提供额外条件                   | `case TextDisplay when display.text.equals({text: "Text Display", color: "gold"})`      |
 | `context`  | 表示当前函数的命令上下文常量，Dict 类型          | `context={as: @p, at: @s}`                                                              |
+| `void`     | 表示函数没有返回值                               | `func onLoad() -> void`                                                                 |
+
+## 类型系统与面向对象
+
+| 关键字       | 用途                           | 示例                                                                                                            |
+| ------------ | ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `class`      | 声明一个类                     | `class GameStatus`、`class EntityDetector<T>`                                                                   |
+| `interface`  | 声明一个接口                   | `interface Data`                                                                                                |
+| `type`       | 重命名一个类型                 | `type NamespaceId = string`                                                                                     |
+| `enum`       | 声明一个枚举类型               | `enum Color`、`enum Gamemode`                                                                                   |
+| `extends`    | 用于继承一个基类               | `class Player extends Entity`、`class HopperBlockEntity extends BlockEntity`                                    |
+| `implements` | 用于实现一个或多个接口         | `class Text implements Data`                                                                                    |
+| `this`       | 用于指代当前实例对象           | `this.id = id`                                                                                                  |
+| `super`      | 用于指代上一层基类             | `super.getName()`                                                                                               |
+| `private`    | 用于声明私有成员               | `private id: string` `private func stepOnce() -> void`                                                          |
+| `public`     | 用于声明公有成员，可省略       | `public func getName() -> string`                                                                               |
+| `readonly`   | 用于标识一个不可变类型或纯函数 | `readonly func getUuid() -> string`、`let text: readonly Text`、`func parseText(text: readonly Text) -> Result` |

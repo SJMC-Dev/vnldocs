@@ -51,6 +51,7 @@ Vanillang 关键字具有特殊用途，不可作用标识符，下面的表格�
 | `static`     | 用于标识一个静态成员                                       | `static gameStatus: string`                                                                                     |
 | `instanceof` | 用于判断一个实例是否为某个类或其子类，或为某个接口的实现类 | `if (player instanceof Entity)`                                                                                 |
 | `final`      | 用于声明一个类不能被继承                                   | `final class World`                                                                                             |
+| `override`   | 用于标识一个成员函数覆盖了基类的同名函数                   | `override func getName() -> string`                                                                             |
 
 ## 字面量关键字
 

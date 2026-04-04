@@ -63,10 +63,12 @@ Vanillang 关键字具有特殊用途，不可作用标识符，下面的表格�
 
 ## 模块关键字
 
-| 关键字   | 用途                                                        | 示例                                                                                        |
-| -------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `import` | 用于导入一个标识符                                          | `import vanillang.math.*`、`import vanillang.ui.TextDisplayUi`                              |
-| `export` | 用于导出一个标识符                                          | `export class Entity`、`export vanillang.std.Gamemode`                                      |
-| `as`     | 用于重命名一个导入或导出的标识符，不能与 * 搭配使用         | `import vanillang.ui.ItemDisplayUi as Button`、`export class VanillangResult {} as Result`  |
-| `module` | 用于包/模块路径开头，表示当前模块，同时声明这是一个相对路径 | `export module.*`、`export module.{ScoreboardTimer as Timer, ScoreboardCounter as Counter}` |
-| `parent` | 用于在相对路径中表示上一级的包名                            | `import module.parent.parent.foo.Bar as Baz`                                                |
+| 关键字   | 用途                                                           | 示例                                                                                        |
+| -------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `import` | 用于导入一个标识符                                             | `import vanillang.math.*`、`import vanillang.ui.TextDisplayUi`                              |
+| `export` | 用于导出一个标识符                                             | `export class Entity`、`export vanillang.std.Gamemode`                                      |
+| `as`     | 用于重命名一个导入或导出的标识符，不能与 * 搭配使用            | `import vanillang.ui.ItemDisplayUi as Button`、`export class VanillangResult {} as Result`  |
+| `module` | 用于路径开头，表示当前模块，同时声明这是一个相对路径           | `export module.*`、`export module.{ScoreboardTimer as Timer, ScoreboardCounter as Counter}` |
+| `parent` | 用于在相对路径中表示上一级的包名                               | `import module.parent.parent.foo.Bar as Baz`                                                |
+| `*`      | 用于导入或导出一个模块下的所有可导出标识符，不能与 as 搭配使用 | `import vanillang.ui.*`、`export module.*`                                                  |
+| `self`   | 用于表示当前包或模块                                           | `import vanillang.ui.{self, ItemDisplayUi, TextDisplayUi}`                                  |

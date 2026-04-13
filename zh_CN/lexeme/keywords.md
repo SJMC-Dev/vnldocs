@@ -26,6 +26,7 @@ Vanillang 关键字具有特殊用途，不可作用标识符，下面的表格�
 | `continue` | 跳出本轮循环迭代                                 | `continue`                                                                              |
 | `switch`   | 用于选择语句                                     | `switch (num)`                                                                          |
 | `case`     | 用于在 switch 语句中匹配编译时常量值或子类的实例 | `case 1`、`case "Vanillang"`、`case BlockDisplay`、`case TextDisplay`                   |
+| `default`  | 用于在 switch 语句中匹配所有未被 case 匹配的情况 | `default`                                                                               |
 | `when`     | 用于匹配子类实例时提供额外条件                   | `case TextDisplay when display.text.equals({text: "Text Display", color: "gold"})`      |
 | `context`  | 表示当前函数的命令上下文常量，Dict 类型          | `context={as: @p, at: @s}`                                                              |
 | `void`     | 表示函数没有返回值                               | `func onLoad() -> void`                                                                 |

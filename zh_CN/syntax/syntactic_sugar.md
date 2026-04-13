@@ -15,7 +15,8 @@ let value: Optional<string> = None
 通过在类型注解后面添加 `?`，可以将一个类型 `T` 标记为可选类型，等价于 `Optional\<T\>`，实际类型也为 `Optional\<T\>`：
 
 ```vanillang
-let name: string? = None // 等价于 let name: Optional<string> = None
+# 等价于 let name: Optional<string> = None
+let name: string? = None
 ```
 
 ## 向上传递异常

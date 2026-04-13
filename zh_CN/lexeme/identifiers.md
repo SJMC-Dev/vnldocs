@@ -17,4 +17,4 @@
 
 * 类型名，例如类名、接口名等，使用 `PascalCase` 格式；
 * 变量名、函数名使用 `camelCase` 格式；
-* 编译时常量名、枚举值名使用 `UPPER_SNAKE_CASE` 格式。
+* 编译时常量名使用 `UPPER_SNAKE_CASE` 格式。

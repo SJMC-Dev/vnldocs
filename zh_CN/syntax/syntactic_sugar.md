@@ -29,3 +29,46 @@ func getBlockEntityInfo(pos: Vec3) -> Dict {
     return blockEntity.toDict()
 }
 ```
+
+## 枚举模式定义
+
+使用 `enum` 关键字可以定义一个枚举模式，和传统的枚举值相比，枚举模式的每个成员都可以有一个或多个关联值，并且在使用时可以通过模式匹配来解构这些关联值。在 Vanillang 中，枚举模式的本质是一个类，其成员为该类的子类。下面给出一个枚举模式的示例：
+
+```vanillang
+enum Result {
+    Success(value: string)
+    Failure(error: string)
+}
+
+#*
+    上述代码等价于：
+
+    class Result {}
+
+    class Success extends Result {
+        value: string
+        func init(value: string) {
+            this.value = value
+        }
+    }
+
+    class Failure extends Result {
+        error: string
+        func init(error: string) {
+            this.error = error
+        }
+    }
+*#
+
+func processResult(result: Result) -> void {
+    # switch 语句模式匹配成功时，会自动进行向下类型转换，确保可以访问枚举模式的关联值
+    switch (result) {
+        case Success when result.value.equals("OK") -> {
+            world.print("Operation succeeded with value: " + result.value)
+            result.callback()
+        }
+        case Failure ->  world.print("Operation failed with error: " + result.error)
+        default -> world.print("Unknown result")
+    }
+}
+```

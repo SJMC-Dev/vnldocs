@@ -77,10 +77,10 @@ Vanillang 关键字具有特殊用途，不可作用标识符，下面的表格�
 
 # 元数据关键字
 
-| 关键字         | 用途                                                            | 示例                                                                    |
-| -------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `metadata`     | 用于定义类、变量、函数等的元数据，供编译器识别并影响编译器行为  | `metadata(deprecated, nowarnings)`                                      |
-| `deprecated`   | metadata 的参数之一，用于标记已弃用的元素                       | `metadata(deprecated)`                                                  |
-| `experimental` | metadata 的参数之一，用于标记实验性的元素                       | `metadata(experimental)`                                                |
-| `nowarnings`   | metadata 的参数之一，用于禁用警告                               | `metadata(nowarnings)`                                                  |
-| `gameversion`  | metadata 的参数之一，用于标记支持的游戏版本，后面跟版本号的范围 | `metadata(gameversion 26.1.2)`、`metadata(gameversion 1.21.11..26.1.2)` |
+| 关键字         | 用途                                                                        | 示例                                                                        |
+| -------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `metadata`     | 用于定义类、变量、函数等的元数据，供编译器识别并影响编译器行为              | `metadata(deprecated, nowarnings)`                                          |
+| `deprecated`   | metadata 的参数之一，用于标记已弃用的元素                                   | `metadata(deprecated)`                                                      |
+| `experimental` | metadata 的参数之一，用于标记实验性的元素                                   | `metadata(experimental)`                                                    |
+| `nowarnings`   | metadata 的参数之一，用于禁用警告                                           | `metadata(nowarnings)`                                                      |
+| `gameversion`  | metadata 的参数之一，用于标记支持的游戏版本，后面跟表示版本号的范围的字符串 | `metadata(gameversion "26.1.2")`、`metadata(gameversion "1.21.11..26.1.2")` |

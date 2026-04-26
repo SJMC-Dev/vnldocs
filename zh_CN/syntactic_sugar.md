@@ -19,17 +19,6 @@ let value: Optional<string> = none
 let name: string? = none
 ```
 
-## 向上传递异常
-
-在函数体内的完整语句结尾使用 `?`，表示如果该语句抛出异常，则将异常向上传递给调用者：
-
-```vanillang
-func getBlockEntityInfo(pos: Vec3) -> Dict {
-    let blockEntity = world.getBlockEntity(pos)?
-    return blockEntity.toDict()
-}
-```
-
 ## 枚举模式定义
 
 使用 `enum` 关键字可以定义一个枚举模式，和传统的枚举值相比，枚举模式的每个成员都可以有一个或多个关联值，并且在使用时可以通过模式匹配来解构这些关联值。在 Vanillang 中，枚举模式的本质是一个类，其成员为该类的子类。下面给出一个枚举模式的示例：

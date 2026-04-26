@@ -37,10 +37,12 @@ Vanillang 支持以下几种声明：
 - 模块导入声明
 - 模块导出声明
 
+声明可以使用元数据进行修饰，元数据是一些供编译器识别并影响编译器行为的标记，可以用于标记已弃用的元素、实验性的元素或禁用警告等。元数据声明必须出现在一个声明的前面，并且与该声明之间只能有一个换行符。
+
 下面给出声明的产生式：
 
 ```ebnf
-Declaration ::= VariableDeclaration | FunctionDeclaration | TypeDeclaration | PropertyDeclaration | MethodDeclaration | ImportDeclaration | ExportDeclaration;
+Declaration ::= [ Metadata <NEWLINE> ] (VariableDeclaration | FunctionDeclaration | TypeDeclaration | PropertyDeclaration | MethodDeclaration | ImportDeclaration | ExportDeclaration);
 
 VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [':' Type] '=' Expression;
 FunctionDeclaration ::= 'func' Identifier '(' [ParameterList] ')' ['->' (Type | 'void')] Block;
@@ -49,6 +51,7 @@ PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' Typ
 MethodDeclaration ::= [ 'private' | 'public' ] [ 'static' ] 'func' Identifier '(' [ParameterList] ')' ['->' (Type | 'void')] [Block];
 ImportDeclaration ::= 'import' ImportPath;
 ExportDeclaration ::= 'export' ExportList;
+Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
 Type ::= [ 'readonly' ] Identifier;
 ParameterList ::= Parameter (',' Parameter)*;
@@ -56,13 +59,12 @@ ClassDeclaration ::= 'class' Identifier [ 'extends' Identifier ] [ 'implements' 
 InterfaceDeclaration ::= 'interface' Identifier Block;
 EnumDeclaration ::= 'enum' Identifier Block;
 TypeAliasDeclaration ::= 'type' Identifier '=' Type;
-ImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{ ImportSpecifierList }' ];
+ImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' ImportPathList '}' ];
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
+MetadataTerm ::= 'deprecated' | 'experimental' | 'nowarnings' | (gameversion String);
 
 Parameter ::= Identifier ':' Type;
-ImportSpecifierList ::= ('self' [ 'as' Identifier ] | ImportSpecifier) (',' ImportSpecifier)*;
-
-ImportSpecifier ::= ImportPath;
+ImportPathList ::= ('self' [ 'as' Identifier ] | ImportPath) (',' ImportPath)*;
 ```
 
 ### 变量声明

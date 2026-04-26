@@ -67,7 +67,7 @@ Vanillang 关键字具有特殊用途，不可作用标识符，下面的表格�
 
 | 关键字   | 用途                                                           | 示例                                                                                        |
 | -------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `import` | 用于导入一个标识符                                             | `import vanillang.math.*`、`import vanillang.ui.TextDisplayUi`                              |
+| `import` | 用于导入一个标识符、模块或包                                   | `import vanillang.math`、`import vanillang.ui.TextDisplayUi`                                |
 | `export` | 用于导出一个标识符                                             | `export class Entity`、`export vanillang.std.Gamemode`                                      |
 | `as`     | 用于重命名一个导入或导出的标识符，不能与 * 搭配使用            | `import vanillang.ui.ItemDisplayUi as Button`、`export class VanillangResult {} as Result`  |
 | `module` | 用于路径开头，表示当前模块，同时声明这是一个相对路径           | `export module.*`、`export module.{ScoreboardTimer as Timer, ScoreboardCounter as Counter}` |

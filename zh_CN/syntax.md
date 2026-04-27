@@ -11,6 +11,8 @@ Vanillang 的语法主要包括以下几个方面：
 - 语句
 - 注释
 
+Vanillang 不使用分号作为语句或声明的结束符，而是使用换行符来分隔语句或声明，且支持语句完整性规则：如果换行符前面不是一个完整的语句或声明，则忽略该换行符。
+
 ## 模块与包
 
 Vanillang 定义一个模块为一个后缀名为 `.vnl` 的源代码文件，一个包为一个目录，包内可以包含多个模块。模块和包的命名规则与标识符相同，但不能使用关键字和保留字。其中，根包定义为向编译器提供的指定目录。
@@ -28,59 +30,76 @@ Vanillang 定义一个模块为一个后缀名为 `.vnl` 的源代码文件，�
 
 ## 声明
 
-Vanillang 声明是模块中的基本元素，用于告知编译器这个模块有哪些标识符以及它们的属性。
+Vanillang 顶层声明是模块中的基本元素，用于告知编译器这个模块有哪些标识符以及它们的属性；成员声明是类、接口或枚举中的基本元素，用于告知编译器这个类、接口或枚举有哪些成员标识符以及它们的属性。
 
-Vanillang 支持以下几种声明：
+Vanillang 支持以下几种顶层声明：
 - 变量声明
 - 函数声明
 - 类型声明
-- 属性声明
-- 方法声明
 - 模块导入声明
 - 模块导出声明
+
+Vanillang 支持以下几种成员声明：
+- 属性声明
+- 方法声明
+- 枚举成员声明
 
 声明可以使用元数据进行修饰，元数据是一些供编译器识别并影响编译器行为的标记，可以用于标记已弃用的元素、实验性的元素或禁用警告等。元数据声明必须出现在一个声明的前面，并且与该声明之间只能有一个换行符。
 
 下面给出声明的产生式：
 
 ```ebnf
-Declaration ::= [ Metadata ] (VariableDeclaration | FunctionDeclaration | TypeDeclaration | PropertyDeclaration | MethodDeclaration | ImportDeclaration | ExportDeclaration);
+Declaration ::= TopDeclaration | MemberDeclaration;
+
+TopDeclaration ::= [ Metadata ] (VariableDeclaration | FunctionDeclaration | TypeDeclaration | ImportDeclaration | ExportDeclaration);
+MemberDeclaration ::= [ Metadata ] (PropertyDeclaration | ClassMethodDeclaration | InterfaceMethodDeclaration | EnumMemberDeclaration);
 
 VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [ ':' Type ] '=' Expression;
-FunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')] FunctionBody;
+FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
 PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' Type ['=' Expression];
-MethodDeclaration ::= [ 'private' | 'public' ] [ 'static' ] 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')] [FunctionBody];
+ClassMethodDeclaration ::= [ 'private' | 'public' ] [ 'static' | 'override' ] FunctionDeclaration;
+InterfaceMethodDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
 ImportDeclaration ::= 'import' ImportPath;
 ExportDeclaration ::= 'export' ExportList;
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
+RegularFunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')] FunctionBody;
+NativeFunctionDeclaration ::= 'native' 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
 Type ::= [ 'readonly' ] TypePrimary [ '?' ];
 ParameterList ::= Parameter (',' Parameter)*;
-ClassDeclaration ::= 'class' Identifier [ GenericParameterList ] [ 'extends' Identifier ] [ 'implements' Identifier (',' Identifier)* ] ClassBody;
-InterfaceDeclaration ::= 'interface' [ GenericParameterList ] Identifier InterfaceBody;
+ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '>' ] [ 'extends' Identifier ] [ 'implements' Identifier (',' Identifier)* ] ClassBody;
+InterfaceDeclaration ::= 'interface' Identifier [ '<' GenericParameterList '>' ] InterfaceBody;
 EnumDeclaration ::= 'enum' Identifier EnumBody;
 TypeAliasDeclaration ::= 'type' Identifier '=' Type;
-ImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' ImportPathList '}' ];
+ImportPath ::= AbsoluteImportPath | ('module' '.' RelativeImportPath);
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
-MetadataTerm ::= 'deprecated' | 'experimental' | 'nowarnings' | (gameversion String);
+MetadataTerm ::= 'deprecated' | 'experimental' | 'nowarnings' | ('gameversion' String);
 
-TypePrimary ::= Identifier [ GenericArgumentList ];
+AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
+RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
+TypePrimary ::= Identifier [ '<' GenericArgumentList '>' ];
 Parameter ::= Identifier ':' Type;
-ImportPathList ::= ('self' [ 'as' Identifier ] | ImportPath) (',' ImportPath)*;
 
-GenericParameterList ::= '<' GenericParameter (',' GenericParameter)* '>';
-GenericParameter ::= Identifier;
-GenericArgumentList ::= '<' Type (',' Type)* '>';
+GenericParameterList ::= GenericParameter (',' GenericParameter)*;
+GenericArgumentList ::= Type (',' Type)*;
+AbsoluteImportPathList ::= AbsoluteImportPathItem (',' AbsoluteImportPathItem)*;
+RelativeImportPathList ::= RelativeImportPathItem (',' RelativeImportPathItem)*;
 
 FunctionBody ::= BlockStatement;
 ClassBody ::= '{' ClassMember* '}';
 InterfaceBody ::= '{' InterfaceMember* '}';
-EnumBody ::= '{' EnumMember* '}';
+EnumBody ::= '{' EnumMemberDeclaration* '}';
+GenericParameter ::= Identifier;
+AbsoluteImportPathItem ::= 'self' [ 'as' Identifier ] | AbsoluteImportPath;
+RelativeImportPathItem ::= 'self' [ 'as' Identifier ] | RelativeImportPath;
 
-ClassMember ::= PropertyDeclaration | MethodDeclaration;
-InterfaceMember ::= MethodDeclaration;
-EnumMember ::= Identifier [ '(' [ParameterList] ')' ];
+ClassMember ::= PropertyDeclaration | ClassMethodDeclaration;
+InterfaceMember ::= InterfaceMethodDeclaration;
+EnumMemberDeclaration ::= Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
+
+EnumAssociatedValueList ::= EnumAssociatedValue (',' EnumAssociatedValue)*;
+EnumAssociatedValue ::= Identifier ':' Type;
 ```
 
 ### 变量声明
@@ -189,7 +208,7 @@ export Player, add as sum
 
 ## 表达式
 
-Vanillang 表达式是由一个或多个操作数和一个或多个运算符组成的代码片段，用于计算一个值，表达式分为 16 个不同的优先级，各个优先级的运算符及结合方式如下表所示：
+Vanillang 表达式是由一个或多个操作数和一个或多个运算符组成的代码片段，用于计算一个值，表达式分为 17 个不同的优先级，各个优先级的运算符及结合方式如下表所示：
 
 | 优先级 | 运算符                                                                                          | 结合方式 |
 | ------ | ----------------------------------------------------------------------------------------------- | -------- |
@@ -198,17 +217,18 @@ Vanillang 表达式是由一个或多个操作数和一个或多个运算符组�
 | 3      | `!`、`~`、`-`（单目）、`+`（单目）                                                              | 右结合   |
 | 4      | `*`、`/`、`//`、`%`                                                                             | 左结合   |
 | 5      | `+`、`-`                                                                                        | 左结合   |
-| 6      | `<<`、`>>`、`>>>`                                                                               | 左结合   |
-| 7      | `&`                                                                                             | 左结合   |
-| 8      | `^`                                                                                             | 左结合   |
-| 9      | `\|`                                                                                            | 左结合   |
-| 10     | `<`、`<=`、`>`、`>=`、`instanceof`                                                              | 左结合   |
-| 11     | `==`、`!=`                                                                                      | 左结合   |
-| 12     | `&&`                                                                                            | 左结合   |
-| 13     | `\|\|`                                                                                          | 左结合   |
-| 14     | `??`                                                                                            | 左结合   |
-| 15     | `?:`                                                                                            | 右结合   |
-| 16     | `=`、`??=`、`+=`、`-=`、`*=`、`/=`、`//=`、`%=`、`**=`、`&=`、`^=`、`\|=`、`<<=`、`>>=`、`>>>=` | 右结合   |
+| 6      | `..`                                                                                            | 左结合   |
+| 7      | `<<`、`>>`、`>>>`                                                                               | 左结合   |
+| 8      | `&`                                                                                             | 左结合   |
+| 9      | `^`                                                                                             | 左结合   |
+| 10     | `\|`                                                                                            | 左结合   |
+| 11     | `<`、`<=`、`>`、`>=`、`instanceof`                                                              | 左结合   |
+| 12     | `==`、`!=`                                                                                      | 左结合   |
+| 13     | `&&`                                                                                            | 左结合   |
+| 14     | `\|\|`                                                                                          | 左结合   |
+| 15     | `??`                                                                                            | 左结合   |
+| 16     | `?:`                                                                                            | 右结合   |
+| 17     | `=`、`??=`、`+=`、`-=`、`*=`、`/=`、`//=`、`%=`、`**=`、`&=`、`^=`、`\|=`、`<<=`、`>>=`、`>>>=` | 右结合   |
 
 下面给出表达式的产生式：
 
@@ -224,7 +244,8 @@ RelationalExpression ::= BitwiseOrExpression (('<' | '<=' | '>' | '>=' | 'instan
 BitwiseOrExpression ::= BitwiseXorExpression ('|' BitwiseXorExpression)*;
 BitwiseXorExpression ::= BitwiseAndExpression ('^' BitwiseAndExpression)*;
 BitwiseAndExpression ::= ShiftExpression ('&' ShiftExpression)*;
-ShiftExpression ::= AdditiveExpression (('<<' | '>>' | '>>>') AdditiveExpression)*;
+ShiftExpression ::= RangeExpression (('<<' | '>>' | '>>>') RangeExpression)*;
+RangeExpression ::= AdditiveExpression [ '..' AdditiveExpression ];
 AdditiveExpression ::= MultiplicativeExpression (('+' | '-') MultiplicativeExpression)*;
 MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpression)*;
 UnaryExpression ::= ('!' | '~' | '-' | '+')* ExponentialExpression;
@@ -234,9 +255,22 @@ PrimaryExpression ::= '(' Expression ')' | Literal | Identifier;
 
 AssignmentOperator ::= '=' | '??=' | '+=' | '-=' | '*=' | '/=' | '//=' | '%=' | '**=' | '&=' | '^=' | '|=' | '<<=' | '>>=' | '>>>=';
 PostfixSuffix ::= (('.' | '?.') Identifier) | '(' [ ArgumentList ] ')' | '[' Expression ']';
-Literal ::= Number | String | Boolean | Array | List | Dict | Selector | Range;
+Literal ::= Number | String | Boolean | ListLiteral | DictLiteral | SNBTArray | Selector;
 
+String ::= StringLiteral [ Interpolation StringPart* StringLiteral ];
+Boolean ::= 'true' | 'false';
+ListLiteral ::= '[' [ Expression (',' Expression)* ] ']';
+DictLiteral ::= '{' [ DictEntry (',' DictEntry)* ] '}';
+SNBTArray ::= '[' ('B' | 'I' | 'L') ';' [ Expression (',' Expression)* ] ']';
+Selector ::= ('@p' | '@r' | '@a' | '@e' | '@s' | '@n') [ '[' SelectorArgumentList ']' ];
 ArgumentList ::= Expression (',' Expression)*;
+
+Interpolation ::= '$(' Expression ')';
+StringPart ::= StringLiteral | Interpolation;
+DictEntry ::= Identifier ':' Expression;
+SelectorArgumentList ::= SelectorArgument (',' SelectorArgument)*;
+
+SelectorArgument ::= Identifier '=' Expression;
 ```
 
 ### 基础表达式
@@ -253,7 +287,7 @@ player
 
 ### 后缀表达式
 
-后缀表达式由一个基础表达式后跟一个或多个可选的后缀组成，后缀可以是成员访问、函数调用或索引访问：
+后缀表达式由一个表达式后跟一个或多个可选的后缀组成，后缀可以是成员访问、函数调用或索引访问：
 
 ```vanillang
 player.name
@@ -264,7 +298,7 @@ array[0]
 
 ### 指数表达式
 
-指数表达式由一个后缀表达式后跟一个可选的指数运算符 `**` 和另一个指数表达式组成：
+指数表达式由一个表达式后跟一个可选的指数运算符 `**` 和另一个表达式组成：
 
 ```vanillang
 2 ** 3
@@ -272,7 +306,7 @@ array[0]
 
 ### 一元表达式
 
-一元表达式由一个或多个一元运算符 `!`、`~`、`-`（单目）或 `+`（单目）后跟一个指数表达式组成：
+一元表达式由一个或多个一元运算符 `!`、`~`、`-`（单目）或 `+`（单目）后跟一个表达式组成：
 
 ```vanillang
 !isOnline
@@ -282,7 +316,7 @@ array[0]
 
 ### 乘除表达式
 
-乘除表达式由一个一元表达式后跟零个或多个乘除运算符 `*`、`/`、`//` 或 `%` 和另一个一元表达式组成：
+乘除表达式由一个表达式后跟零个或多个乘除运算符 `*`、`/`、`//` 或 `%` 和另一个表达式组成：
 
 ```vanillang
 a * b
@@ -293,16 +327,25 @@ a % b
 
 ### 加减表达式
 
-加减表达式由一个乘除表达式后跟零个或多个加减运算符 `+` 或 `-` 和另一个乘除表达式组成：
+加减表达式由一个表达式后跟零个或多个加减运算符 `+` 或 `-` 和另一个表达式组成：
 
 ```vanillang
 a + b
 a - b
 ```
 
+## 范围表达式
+
+范围表达式由一个表达式后跟一个可选的范围运算符 `..` 和另一个表达式组成：
+
+```vanillang
+1..10
+a..b
+```
+
 ### 位移表达式
 
-位移表达式由一个加减表达式后跟零个或多个位移运算符 `<<`、`>>` 或 `>>>` 和另一个加减表达式组成：
+位移表达式由一个表达式后跟零个或多个位移运算符 `<<`、`>>` 或 `>>>` 和另一个表达式组成：
 
 ```vanillang
 a << 2
@@ -312,7 +355,7 @@ a >>> 2
 
 ### 位运算表达式
 
-位运算表达式由一个位移表达式后跟零个或多个位运算符 `&`、`^` 或 `\|` 和另一个位移表达式组成：
+位运算表达式由一个表达式后跟零个或多个位运算符 `&`、`^` 或 `\|` 和另一个表达式组成：
 
 ```vanillang
 a & b
@@ -322,7 +365,7 @@ a | b
 
 ### 比较表达式
 
-比较表达式由一个位运算表达式后跟零个或多个比较运算符 `<`、`<=`、`>`、`>=` 或 `instanceof` 和另一个位运算表达式组成：
+比较表达式由一个表达式后跟零个或多个比较运算符 `<`、`<=`、`>`、`>=` 或 `instanceof` 和另一个表达式组成：
 
 ```vanillang
 a < b
@@ -334,7 +377,7 @@ player instanceof Entity
 
 ### 相等表达式
 
-相等表达式由一个比较表达式后跟零个或多个相等运算符 `==` 或 `!=` 和另一个比较表达式组成：
+相等表达式由一个表达式后跟零个或多个相等运算符 `==` 或 `!=` 和另一个表达式组成：
 
 ```vanillang
 a == b
@@ -343,7 +386,7 @@ a != b
 
 ### 逻辑表达式
 
-逻辑表达式由一个相等表达式后跟零个或多个逻辑运算符 `&&` 或 `\|\|` 和另一个相等表达式组成：
+逻辑表达式由一个表达式后跟零个或多个逻辑运算符 `&&` 或 `\|\|` 和另一个表达式组成：
 
 ```vanillang
 a && b
@@ -352,7 +395,7 @@ a || b
 
 ### 空值合并表达式
 
-空值合并表达式由一个逻辑表达式后跟零个或多个空值合并运算符 `??` 和另一个逻辑表达式组成：
+空值合并表达式由一个表达式后跟零个或多个空值合并运算符 `??` 和另一个表达式组成：
 
 ```vanillang
 a ?? b
@@ -360,7 +403,7 @@ a ?? b
 
 ### 条件表达式
 
-条件表达式由一个空值合并表达式后跟一个问号 `?`、一个冒号 `:` 和另一个条件表达式组成：
+条件表达式由一个表达式后跟一个问号 `?`、一个表达式、一个冒号 `:` 和另一个表达式组成：
 
 ```vanillang
 condition ? expr1 : expr2
@@ -368,7 +411,7 @@ condition ? expr1 : expr2
 
 ### 赋值表达式
 
-赋值表达式由一个条件表达式后跟一个赋值运算符 `=`、`??=`、`+=`、`-=`、`*=`、`/=`、`//=`、`%=`、`**=`、`&=`、`^=`、`\|=`、`<<=`、`>>=` 或 `>>>=` 和另一个赋值表达式组成：
+赋值表达式由一个表达式后跟一个赋值运算符 `=`、`??=`、`+=`、`-=`、`*=`、`/=`、`//=`、`%=`、`**=`、`&=`、`^=`、`\|=`、`<<=`、`>>=` 或 `>>>=` 和另一个表达式组成：
 
 ```vanillang
 a = b
@@ -477,7 +520,7 @@ while (player.health > 0) {
 }
 
 label outer
-for (enemy in nearbyEnemies) {
+for (var enemy in nearbyEnemies) {
     enemy.takeDamage(5)
 
     while (enemy.health > 0) {

@@ -28,6 +28,8 @@ Vanillang 定义一个模块为一个后缀名为 `.vnl` 的源代码文件，�
 
 ## 声明
 
+Vanillang 声明是模块中的基本元素，用于告知编译器这个模块有哪些标识符以及它们的属性。
+
 Vanillang 支持以下几种声明：
 - 变量声明
 - 函数声明
@@ -42,34 +44,43 @@ Vanillang 支持以下几种声明：
 下面给出声明的产生式：
 
 ```ebnf
-Declaration ::= [ Metadata <NEWLINE> ] (VariableDeclaration | FunctionDeclaration | TypeDeclaration | PropertyDeclaration | MethodDeclaration | ImportDeclaration | ExportDeclaration);
+Declaration ::= [ Metadata ] (VariableDeclaration | FunctionDeclaration | TypeDeclaration | PropertyDeclaration | MethodDeclaration | ImportDeclaration | ExportDeclaration);
 
-VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [':' Type] '=' Expression;
-FunctionDeclaration ::= 'func' Identifier '(' [ParameterList] ')' ['->' (Type | 'void')] Block;
+VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [ ':' Type ] '=' Expression;
+FunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')] FunctionBody;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
 PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' Type ['=' Expression];
-MethodDeclaration ::= [ 'private' | 'public' ] [ 'static' ] 'func' Identifier '(' [ParameterList] ')' ['->' (Type | 'void')] [Block];
+MethodDeclaration ::= [ 'private' | 'public' ] [ 'static' ] 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')] [FunctionBody];
 ImportDeclaration ::= 'import' ImportPath;
 ExportDeclaration ::= 'export' ExportList;
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
 Type ::= [ 'readonly' ] TypePrimary [ '?' ];
 ParameterList ::= Parameter (',' Parameter)*;
-ClassDeclaration ::= 'class' Identifier [GenericParameterList] [ 'extends' Identifier ] [ 'implements' Identifier (',' Identifier)* ] Block;
-InterfaceDeclaration ::= 'interface' [GenericParameterList] Identifier Block;
-EnumDeclaration ::= 'enum' Identifier Block;
+ClassDeclaration ::= 'class' Identifier [ GenericParameterList ] [ 'extends' Identifier ] [ 'implements' Identifier (',' Identifier)* ] ClassBody;
+InterfaceDeclaration ::= 'interface' [ GenericParameterList ] Identifier InterfaceBody;
+EnumDeclaration ::= 'enum' Identifier EnumBody;
 TypeAliasDeclaration ::= 'type' Identifier '=' Type;
 ImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' ImportPathList '}' ];
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
 MetadataTerm ::= 'deprecated' | 'experimental' | 'nowarnings' | (gameversion String);
 
-TypePrimary ::= Identifier [GenericArgumentList];
+TypePrimary ::= Identifier [ GenericArgumentList ];
 Parameter ::= Identifier ':' Type;
 ImportPathList ::= ('self' [ 'as' Identifier ] | ImportPath) (',' ImportPath)*;
 
 GenericParameterList ::= '<' GenericParameter (',' GenericParameter)* '>';
 GenericParameter ::= Identifier;
 GenericArgumentList ::= '<' Type (',' Type)* '>';
+
+FunctionBody ::= BlockStatement;
+ClassBody ::= '{' ClassMember* '}';
+InterfaceBody ::= '{' InterfaceMember* '}';
+EnumBody ::= '{' EnumMember* '}';
+
+ClassMember ::= PropertyDeclaration | MethodDeclaration;
+InterfaceMember ::= MethodDeclaration;
+EnumMember ::= Identifier [ '(' [ParameterList] ')' ];
 ```
 
 ### 变量声明
@@ -178,7 +189,7 @@ export Player, add as sum
 
 ## 表达式
 
-Vanillang 表达式分为 16 个不同的优先级，各个优先级的运算符及结合方式如下表所示：
+Vanillang 表达式是由一个或多个操作数和一个或多个运算符组成的代码片段，用于计算一个值，表达式分为 16 个不同的优先级，各个优先级的运算符及结合方式如下表所示：
 
 | 优先级 | 运算符                                                                                          | 结合方式 |
 | ------ | ----------------------------------------------------------------------------------------------- | -------- |
@@ -204,7 +215,7 @@ Vanillang 表达式分为 16 个不同的优先级，各个优先级的运算符
 ```ebnf
 Expression ::= AssignmentExpression;
 AssignmentExpression ::= ConditionalExpression [ AssignmentOperator AssignmentExpression ];
-ConditionalExpression ::= NullishCoalescingExpression ['?' AssignmentExpression ':' ConditionalExpression];
+ConditionalExpression ::= NullishCoalescingExpression [ '?' AssignmentExpression ':' ConditionalExpression ];
 NullishCoalescingExpression ::= LogicalOrExpression ('??' LogicalOrExpression)*;
 LogicalOrExpression ::= LogicalAndExpression ('||' LogicalAndExpression)*;
 LogicalAndExpression ::= EqualityExpression ('&&' EqualityExpression)*;
@@ -217,7 +228,7 @@ ShiftExpression ::= AdditiveExpression (('<<' | '>>' | '>>>') AdditiveExpression
 AdditiveExpression ::= MultiplicativeExpression (('+' | '-') MultiplicativeExpression)*;
 MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpression)*;
 UnaryExpression ::= ('!' | '~' | '-' | '+')* ExponentialExpression;
-ExponentialExpression ::= PostfixExpression ['**' ExponentialExpression];
+ExponentialExpression ::= PostfixExpression [ '**' ExponentialExpression ];
 PostfixExpression ::= PrimaryExpression PostfixSuffix*;
 PrimaryExpression ::= '(' Expression ')' | Literal | Identifier;
 
@@ -378,5 +389,35 @@ a >>>= 2
 ```
 
 ## 语句
+
+Vanillang 语句是用于执行操作的代码片段。
+
+Vanillang 支持以下几种语句：
+- 表达式语句
+- 变量声明语句
+- 块语句
+- 控制流语句
+
+下面给出语句的产生式：
+
+```ebnf
+Statement ::= ExpressionStatement | VariableDeclarationStatement | BlockStatement | ControlFlowStatement;
+
+ExpressionStatement ::= Expression;
+VariableDeclarationStatement ::= VariableDeclaration;
+BlockStatement ::= '{' Statement* '}';
+ControlFlowStatement ::= IfStatement | SwitchStatement | WhileStatement | ForStatement | ReturnStatement | BreakStatement | ContinueStatement | ReloadStatement;
+
+IfStatement ::= 'if' '(' Expression ')' Statement [ 'else' Statement ];
+SwitchStatement ::= 'switch' '(' Expression ')' '{' (SwitchCase '->' Statement)* [ 'default' '->' Statement ] '}';
+WhileStatement ::= [ 'label' Identifier ] 'while' '(' Expression ')' Statement;
+ForStatement ::= [ 'label' Identifier ] 'for' '(' ('var' | 'let' | 'const') Identifier 'in' Expression ')' Statement;
+ReturnStatement ::= 'return' [ Expression ];
+BreakStatement ::= 'break' [ Identifier ];
+ContinueStatement ::= 'continue' [ Identifier ];
+ReloadStatement ::= 'reload';
+
+SwitchCase ::= 'case' Expression [ 'when' Expression ];
+```
 
 ## 注释

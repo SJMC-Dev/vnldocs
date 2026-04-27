@@ -420,4 +420,89 @@ ReloadStatement ::= 'reload';
 SwitchCase ::= 'case' Expression [ 'when' Expression ];
 ```
 
+### 表达式语句
+
+表达式语句由一个表达式组成，执行该表达式并丢弃其结果：
+
+```vanillang
+player.name
+greet("Vanillang")
+```
+
+### 变量声明语句
+
+变量声明语句由一个变量声明组成，用于声明一个变量：
+
+```vanillang
+var x: int = 10
+let name: string = "Vanillang"
+const PI: float = 3.14159f
+```
+
+### 块语句
+
+块语句由一对花括号 `{}` 包围的一系列语句组成，用于创建一个新的作用域：
+
+```vanillang
+{
+    var x: int = 10
+    print(x)
+}
+```
+
+### 控制流语句
+
+控制流语句用于控制程序的执行流程，包括条件语句、循环语句和跳转语句等：
+
+```vanillang
+if (player.health <= 0) {
+    print("Game Over")
+} else {
+    print("Keep Fighting!")
+}
+
+switch (result) {
+    case Success when result.value == "Victory" -> print("You Win!")
+    case Success -> print("Success: " + result.value)
+    case Failure -> print("Failure: " + result.error)
+    default -> print("Unknown Result")
+}
+
+while (player.health > 0) {
+    player.takeDamage(1)
+
+    if (player.health == 10) {
+        break
+    }
+}
+
+label outer
+for (enemy in nearbyEnemies) {
+    enemy.takeDamage(5)
+
+    while (enemy.health > 0) {
+        enemy.takeDamage(1)
+
+        if (enemy.health == 1) {
+            continue outer
+        }
+    }
+}
+
+return player.health
+
+reload
+```
+
 ## 注释
+
+Vanillang 支持两种注释：单行注释和多行注释。单行注释以 `#` 开头，直到行末结束；多行注释以 `#*` 开头，以 `*#` 结尾，可以跨越多行。
+
+```vanillang
+# 这是一个单行注释
+
+#* 
+    这是一个多行注释
+    可以跨越多行
+*#
+```

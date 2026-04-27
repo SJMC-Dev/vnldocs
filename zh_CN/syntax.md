@@ -233,7 +233,7 @@ PostfixExpression ::= PrimaryExpression PostfixSuffix*;
 PrimaryExpression ::= '(' Expression ')' | Literal | Identifier;
 
 AssignmentOperator ::= '=' | '??=' | '+=' | '-=' | '*=' | '/=' | '//=' | '%=' | '**=' | '&=' | '^=' | '|=' | '<<=' | '>>=' | '>>>=';
-PostfixSuffix ::= (('.' | '?.') Identifier) | '(' [ArgumentList] ')' | '[' Expression ']';
+PostfixSuffix ::= (('.' | '?.') Identifier) | '(' [ ArgumentList ] ')' | '[' Expression ']';
 Literal ::= Number | String | Boolean | Array | List | Dict | Selector | Range;
 
 ArgumentList ::= Expression (',' Expression)*;
@@ -417,7 +417,7 @@ BreakStatement ::= 'break' [ Identifier ];
 ContinueStatement ::= 'continue' [ Identifier ];
 ReloadStatement ::= 'reload';
 
-SwitchCase ::= 'case' Expression [ 'when' Expression ];
+SwitchCase ::= 'case' (Literal | Identifier) [ 'when' Expression ];
 ```
 
 ### 表达式语句
@@ -446,7 +446,7 @@ const PI: float = 3.14159f
 ```vanillang
 {
     var x: int = 10
-    print(x)
+    world.print(x)
 }
 ```
 
@@ -456,16 +456,16 @@ const PI: float = 3.14159f
 
 ```vanillang
 if (player.health <= 0) {
-    print("Game Over")
+    world.print("Game Over")
 } else {
-    print("Keep Fighting!")
+    world.print("Keep Fighting!")
 }
 
 switch (result) {
-    case Success when result.value == "Victory" -> print("You Win!")
-    case Success -> print("Success: " + result.value)
-    case Failure -> print("Failure: " + result.error)
-    default -> print("Unknown Result")
+    case Success when result.value == "Victory" -> world.print("You Win!")
+    case Success -> world.print("Success: " + result.value)
+    case Failure -> world.print("Failure: " + result.error)
+    default -> world.print("Unknown Result")
 }
 
 while (player.health > 0) {

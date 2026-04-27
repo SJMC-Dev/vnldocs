@@ -53,18 +53,23 @@ ImportDeclaration ::= 'import' ImportPath;
 ExportDeclaration ::= 'export' ExportList;
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
-Type ::= [ 'readonly' ] Identifier;
+Type ::= [ 'readonly' ] TypePrimary [ '?' ];
 ParameterList ::= Parameter (',' Parameter)*;
-ClassDeclaration ::= 'class' Identifier [ 'extends' Identifier ] [ 'implements' Identifier (',' Identifier)* ] Block;
-InterfaceDeclaration ::= 'interface' Identifier Block;
+ClassDeclaration ::= 'class' Identifier [GenericParameterList] [ 'extends' Identifier ] [ 'implements' Identifier (',' Identifier)* ] Block;
+InterfaceDeclaration ::= 'interface' [GenericParameterList] Identifier Block;
 EnumDeclaration ::= 'enum' Identifier Block;
 TypeAliasDeclaration ::= 'type' Identifier '=' Type;
 ImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' ImportPathList '}' ];
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
 MetadataTerm ::= 'deprecated' | 'experimental' | 'nowarnings' | (gameversion String);
 
+TypePrimary ::= Identifier [GenericArgumentList];
 Parameter ::= Identifier ':' Type;
 ImportPathList ::= ('self' [ 'as' Identifier ] | ImportPath) (',' ImportPath)*;
+
+GenericParameterList ::= '<' GenericParameter (',' GenericParameter)* '>';
+GenericParameter ::= Identifier;
+GenericArgumentList ::= '<' Type (',' Type)* '>';
 ```
 
 ### 变量声明
@@ -170,3 +175,208 @@ export Player as P
 export add as sum
 export Player, add as sum
 ```
+
+## 表达式
+
+Vanillang 表达式分为 16 个不同的优先级，各个优先级的运算符及结合方式如下表所示：
+
+| 优先级 | 运算符                                                                                          | 结合方式 |
+| ------ | ----------------------------------------------------------------------------------------------- | -------- |
+| 1      | `()`、`[]`、`.`、`?.`                                                                           | 左结合   |
+| 2      | `**`                                                                                            | 右结合   |
+| 3      | `!`、`~`、`-`（单目）、`+`（单目）                                                              | 右结合   |
+| 4      | `*`、`/`、`//`、`%`                                                                             | 左结合   |
+| 5      | `+`、`-`                                                                                        | 左结合   |
+| 6      | `<<`、`>>`、`>>>`                                                                               | 左结合   |
+| 7      | `&`                                                                                             | 左结合   |
+| 8      | `^`                                                                                             | 左结合   |
+| 9      | `\|`                                                                                            | 左结合   |
+| 10     | `<`、`<=`、`>`、`>=`、`instanceof`                                                              | 左结合   |
+| 11     | `==`、`!=`                                                                                      | 左结合   |
+| 12     | `&&`                                                                                            | 左结合   |
+| 13     | `\|\|`                                                                                          | 左结合   |
+| 14     | `??`                                                                                            | 左结合   |
+| 15     | `?:`                                                                                            | 右结合   |
+| 16     | `=`、`??=`、`+=`、`-=`、`*=`、`/=`、`//=`、`%=`、`**=`、`&=`、`^=`、`\|=`、`<<=`、`>>=`、`>>>=` | 右结合   |
+
+下面给出表达式的产生式：
+
+```ebnf
+Expression ::= AssignmentExpression;
+AssignmentExpression ::= ConditionalExpression [ AssignmentOperator AssignmentExpression ];
+ConditionalExpression ::= NullishCoalescingExpression ['?' AssignmentExpression ':' ConditionalExpression];
+NullishCoalescingExpression ::= LogicalOrExpression ('??' LogicalOrExpression)*;
+LogicalOrExpression ::= LogicalAndExpression ('||' LogicalAndExpression)*;
+LogicalAndExpression ::= EqualityExpression ('&&' EqualityExpression)*;
+EqualityExpression ::= RelationalExpression (('==' | '!=') RelationalExpression)*;
+RelationalExpression ::= BitwiseOrExpression (('<' | '<=' | '>' | '>=' | 'instanceof') BitwiseOrExpression)*;
+BitwiseOrExpression ::= BitwiseXorExpression ('|' BitwiseXorExpression)*;
+BitwiseXorExpression ::= BitwiseAndExpression ('^' BitwiseAndExpression)*;
+BitwiseAndExpression ::= ShiftExpression ('&' ShiftExpression)*;
+ShiftExpression ::= AdditiveExpression (('<<' | '>>' | '>>>') AdditiveExpression)*;
+AdditiveExpression ::= MultiplicativeExpression (('+' | '-') MultiplicativeExpression)*;
+MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpression)*;
+UnaryExpression ::= ('!' | '~' | '-' | '+')* ExponentialExpression;
+ExponentialExpression ::= PostfixExpression ['**' ExponentialExpression];
+PostfixExpression ::= PrimaryExpression PostfixSuffix*;
+PrimaryExpression ::= '(' Expression ')' | Literal | Identifier;
+
+AssignmentOperator ::= '=' | '??=' | '+=' | '-=' | '*=' | '/=' | '//=' | '%=' | '**=' | '&=' | '^=' | '|=' | '<<=' | '>>=' | '>>>=';
+PostfixSuffix ::= (('.' | '?.') Identifier) | '(' [ArgumentList] ')' | '[' Expression ']';
+Literal ::= Number | String | Boolean | Array | List | Dict | Selector | Range;
+
+ArgumentList ::= Expression (',' Expression)*;
+```
+
+### 基础表达式
+
+基础表达式由字面量、标识符或括号包围的表达式组成：
+
+```vanillang
+42
+"Hello, Vanillang!"
+true
+player
+(x + y)
+```
+
+### 后缀表达式
+
+后缀表达式由一个基础表达式后跟一个或多个可选的后缀组成，后缀可以是成员访问、函数调用或索引访问：
+
+```vanillang
+player.name
+player?.health
+greet("Vanillang")
+array[0]
+```
+
+### 指数表达式
+
+指数表达式由一个后缀表达式后跟一个可选的指数运算符 `**` 和另一个指数表达式组成：
+
+```vanillang
+2 ** 3
+```
+
+### 一元表达式
+
+一元表达式由一个或多个一元运算符 `!`、`~`、`-`（单目）或 `+`（单目）后跟一个指数表达式组成：
+
+```vanillang
+!isOnline
+-health
++score
+```
+
+### 乘除表达式
+
+乘除表达式由一个一元表达式后跟零个或多个乘除运算符 `*`、`/`、`//` 或 `%` 和另一个一元表达式组成：
+
+```vanillang
+a * b
+a / b
+a // b
+a % b
+```
+
+### 加减表达式
+
+加减表达式由一个乘除表达式后跟零个或多个加减运算符 `+` 或 `-` 和另一个乘除表达式组成：
+
+```vanillang
+a + b
+a - b
+```
+
+### 位移表达式
+
+位移表达式由一个加减表达式后跟零个或多个位移运算符 `<<`、`>>` 或 `>>>` 和另一个加减表达式组成：
+
+```vanillang
+a << 2
+a >> 2
+a >>> 2
+```
+
+### 位运算表达式
+
+位运算表达式由一个位移表达式后跟零个或多个位运算符 `&`、`^` 或 `\|` 和另一个位移表达式组成：
+
+```vanillang
+a & b
+a ^ b
+a | b
+```
+
+### 比较表达式
+
+比较表达式由一个位运算表达式后跟零个或多个比较运算符 `<`、`<=`、`>`、`>=` 或 `instanceof` 和另一个位运算表达式组成：
+
+```vanillang
+a < b
+a <= b
+a > b
+a >= b
+player instanceof Entity
+```
+
+### 相等表达式
+
+相等表达式由一个比较表达式后跟零个或多个相等运算符 `==` 或 `!=` 和另一个比较表达式组成：
+
+```vanillang
+a == b
+a != b
+```
+
+### 逻辑表达式
+
+逻辑表达式由一个相等表达式后跟零个或多个逻辑运算符 `&&` 或 `\|\|` 和另一个相等表达式组成：
+
+```vanillang
+a && b
+a || b
+```
+
+### 空值合并表达式
+
+空值合并表达式由一个逻辑表达式后跟零个或多个空值合并运算符 `??` 和另一个逻辑表达式组成：
+
+```vanillang
+a ?? b
+```
+
+### 条件表达式
+
+条件表达式由一个空值合并表达式后跟一个问号 `?`、一个冒号 `:` 和另一个条件表达式组成：
+
+```vanillang
+condition ? expr1 : expr2
+```
+
+### 赋值表达式
+
+赋值表达式由一个条件表达式后跟一个赋值运算符 `=`、`??=`、`+=`、`-=`、`*=`、`/=`、`//=`、`%=`、`**=`、`&=`、`^=`、`\|=`、`<<=`、`>>=` 或 `>>>=` 和另一个赋值表达式组成：
+
+```vanillang
+a = b
+a ??= b
+a += b
+a -= b
+a *= b
+a /= b
+a //= b
+a %= b
+a **= b
+a &= b
+a ^= b
+a |= b
+a <<= 2
+a >>= 2
+a >>>= 2
+```
+
+## 语句
+
+## 注释

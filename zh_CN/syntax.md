@@ -270,7 +270,7 @@ ArgumentList ::= Expression (',' Expression)*;
 
 Interpolation ::= '$(' Expression ')';
 StringPart ::= StringLiteral | Interpolation;
-DictEntry ::= Identifier ':' Expression;
+DictEntry ::= (Identifier | StringLiteral) ':' Expression;
 SelectorArgumentList ::= SelectorArgument (',' SelectorArgument)*;
 
 SelectorArgument ::= Identifier '=' Expression;

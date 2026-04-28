@@ -25,34 +25,39 @@ Vanillang 定义一个模块为一个后缀名为 `.vnl` 的源代码文件，�
 可以使用 `export` 声明导出一个标识符，导出的标识符可以被其他模块导入使用。导出时可以使用 `as` 关键字为导出的标识符指定一个别名，指定别名后，在 `import` 声明中只能使用别名导入该标识符，不能使用原名导入该标识符。
 
 导入声明只能出现在模块顶层，不能出现在其他任何地方。导入声明的作用域为整个模块，即在模块内的任何位置都可以使用导入的标识符。 导入声明的执行顺序为从上到下，导入声明会按照它们在模块中的出现顺序依次执行。
-
 导出声明只能出现在模块结尾，不能出现在其他任何地方。
+
+下面给出模块的产生式：
+
+```ebnf
+Module ::= (ImportDeclaration*) (TopIdentifierDeclaration*) (ExportDeclaration*);
+```
 
 ## 声明
 
-Vanillang 顶层声明是模块中的基本元素，用于告知编译器这个模块有哪些标识符以及它们的属性；成员声明是类、接口或枚举中的基本元素，用于告知编译器这个类、接口或枚举有哪些成员标识符以及它们的属性。
+Vanillang 顶层标识符声明是模块中的基本元素，用于告知编译器这个模块有哪些标识符以及它们的属性；成员声明是类、接口或枚举中的基本元素，用于告知编译器这个类、接口或枚举有哪些成员标识符以及它们的属性；模块导入声明用于导入一个包、模块或标识符；模块导出声明用于导出一个标识符。
 
-Vanillang 支持以下几种顶层声明：
+Vanillang 支持以下几种顶层标识符声明：
 - 变量声明
 - 函数声明
 - 类型声明
-- 模块导入声明
-- 模块导出声明
 
 Vanillang 支持以下几种成员声明：
 - 属性声明
 - 方法声明
 - 枚举成员声明
 
-声明可以使用元数据进行修饰，元数据是一些供编译器识别并影响编译器行为的标记，可以用于标记已弃用的元素、实验性的元素或禁用警告等。元数据如果出现则必须出现在一个声明的前面。
+顶层标识符和成员声明可以使用元数据进行修饰，元数据是一些供编译器识别并影响编译器行为的标记，可以用于标记已弃用的元素、实验性的元素或禁用警告等。元数据如果出现则必须出现在一个声明的前面。
 
 下面给出声明的产生式：
 
 ```ebnf
-Declaration ::= TopDeclaration | MemberDeclaration;
+Declaration ::= TopIdentifierDeclaration | MemberDeclaration | ImportDeclaration | ExportDeclaration;
 
-TopDeclaration ::= [ Metadata ] (VariableDeclaration | FunctionDeclaration | TypeDeclaration | ImportDeclaration | ExportDeclaration);
+TopIdentifierDeclaration ::= [ Metadata ] (VariableDeclaration | FunctionDeclaration | TypeDeclaration);
 MemberDeclaration ::= [ Metadata ] (PropertyDeclaration | ClassMethodDeclaration | InterfaceMethodDeclaration | EnumMemberDeclaration);
+ImportDeclaration ::= 'import' ImportPath;
+ExportDeclaration ::= 'export' ExportList;
 
 VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [ ':' Type ] '=' Expression;
 FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
@@ -60,8 +65,6 @@ TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | 
 PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' Type ['=' Expression];
 ClassMethodDeclaration ::= [ 'private' | 'public' ] [ 'static' | 'override' ] FunctionDeclaration;
 InterfaceMethodDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
-ImportDeclaration ::= 'import' ImportPath;
-ExportDeclaration ::= 'export' ExportList;
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
 RegularFunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')] FunctionBody;

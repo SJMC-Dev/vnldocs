@@ -258,7 +258,7 @@ PrimaryExpression ::= '(' Expression ')' | Literal | Identifier;
 
 AssignmentOperator ::= '=' | '??=' | '+=' | '-=' | '*=' | '/=' | '//=' | '%=' | '**=' | '&=' | '^=' | '|=' | '<<=' | '>>=' | '>>>=';
 PostfixSuffix ::= (('.' | '?.') Identifier) | '(' [ ArgumentList ] ')' | '[' Expression ']';
-Literal ::= Number | String | Boolean | ListLiteral | DictLiteral | SNBTArray | Selector;
+Literal ::= Number | Char | String | Boolean | ListLiteral | DictLiteral | SNBTArray | Selector;
 
 String ::= StringLiteral [ Interpolation StringPart* StringLiteral ];
 Boolean ::= 'true' | 'false';

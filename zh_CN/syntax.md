@@ -74,14 +74,14 @@ ParameterList ::= Parameter (',' Parameter)*;
 ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '>' ] [ 'extends' Identifier ] [ 'implements' Identifier (',' Identifier)* ] ClassBody;
 InterfaceDeclaration ::= 'interface' Identifier [ '<' GenericParameterList '>' ] InterfaceBody;
 EnumDeclaration ::= 'enum' Identifier EnumBody;
-TypeAliasDeclaration ::= 'type' Identifier '=' Type;
+TypeAliasDeclaration ::= 'type' Identifier '=' TypePrimary;
 ImportPath ::= AbsoluteImportPath | ('module' '.' RelativeImportPath);
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
 MetadataTerm ::= 'deprecated' | 'experimental' | 'nowarnings' | ('gameversion' String);
 
 AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
-TypePrimary ::= Identifier [ '<' GenericArgumentList '>' ];
+TypePrimary ::= Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ];
 Parameter ::= Identifier ':' Type;
 
 GenericParameterList ::= GenericParameter (',' GenericParameter)*;

@@ -86,7 +86,7 @@ TypePrimary ::= Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ];
 Parameter ::= Identifier ':' Type;
 
 GenericParameterList ::= GenericParameter (',' GenericParameter)*;
-GenericArgumentList ::= Type (',' Type)*;
+GenericArgumentList ::= TypePrimary (',' TypePrimary)*;
 AbsoluteImportPathList ::= AbsoluteImportPathItem (',' AbsoluteImportPathItem)*;
 RelativeImportPathList ::= RelativeImportPathItem (',' RelativeImportPathItem)*;
 

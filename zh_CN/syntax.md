@@ -77,7 +77,8 @@ EnumDeclaration ::= 'enum' Identifier EnumBody;
 TypeAliasDeclaration ::= 'type' Identifier '=' TypePrimary;
 ImportPath ::= AbsoluteImportPath | ('module' '.' RelativeImportPath);
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
-MetadataTerm ::= 'deprecated' | 'experimental' | 'nowarnings' | ('gameversion' String);
+MetadataTerm ::= Identifier [ StringLiteral ];
+```
 
 AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.*' | 'as' Identifier | '{' RelativeImportPathList '}' ];

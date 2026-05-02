@@ -69,7 +69,7 @@ Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
 RegularFunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')] FunctionBody;
 NativeFunctionDeclaration ::= 'native' 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
-Type ::= [ 'readonly' ] TypePrimary [ '?' ];
+Type ::= [ 'readonly' ] TypePrimary;
 ParameterList ::= Parameter (',' Parameter)*;
 ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '>' ] [ 'extends' TypePrimary ] [ 'implements' TypePrimary (',' TypePrimary)* ] ClassBody;
 InterfaceDeclaration ::= 'interface' Identifier [ '<' GenericParameterList '>' ] InterfaceBody;
@@ -82,7 +82,7 @@ MetadataTerm ::= Identifier [ StringLiteral ];
 
 AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
-TypePrimary ::= Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ];
+TypePrimary ::= Identifier ('.' Identifier)* [ '?' ] [ '<' GenericArgumentList '>' ];
 Parameter ::= Identifier ':' Type;
 
 GenericParameterList ::= GenericParameter (',' GenericParameter)*;

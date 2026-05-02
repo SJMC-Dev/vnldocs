@@ -71,7 +71,7 @@ RegularFunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->'
 NativeFunctionDeclaration ::= 'native' 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
 Type ::= [ 'readonly' ] TypePrimary [ '?' ];
 ParameterList ::= Parameter (',' Parameter)*;
-ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '>' ] [ 'extends' Identifier ] [ 'implements' Identifier (',' Identifier)* ] ClassBody;
+ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '>' ] [ 'extends' TypePrimary ] [ 'implements' TypePrimary (',' TypePrimary)* ] ClassBody;
 InterfaceDeclaration ::= 'interface' Identifier [ '<' GenericParameterList '>' ] InterfaceBody;
 EnumDeclaration ::= 'enum' Identifier [ '<' GenericParameterList '>' ] EnumBody;
 TypeAliasDeclaration ::= 'type' Identifier [ '<' GenericParameterList '>' ] '=' TypePrimary;

@@ -464,7 +464,7 @@ BreakStatement ::= 'break' [ Identifier ];
 ContinueStatement ::= 'continue' [ Identifier ];
 ReloadStatement ::= 'reload';
 
-SwitchCase ::= 'case' (Literal | Identifier) [ 'when' Expression ];
+SwitchCase ::= 'case' (Literal | TypePrimary) [ 'when' Expression ];
 ```
 
 ### 表达式语句

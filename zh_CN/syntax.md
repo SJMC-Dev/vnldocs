@@ -59,22 +59,22 @@ MemberDeclaration ::= [ Metadata ] (PropertyDeclaration | ClassMethodDeclaration
 ImportDeclaration ::= 'import' ImportPath;
 ExportDeclaration ::= 'export' ExportList;
 
-VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [ ':' Type ] '=' Expression;
+VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [ ':' TypeAnnotation ] '=' Expression;
 FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
-PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' Type ['=' Expression];
+PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' TypeAnnotation ['=' Expression];
 ClassMethodDeclaration ::= [ 'private' | 'public' ] [ 'static' | 'override' ] FunctionDeclaration;
-InterfaceMethodDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
+InterfaceMethodDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
-RegularFunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')] FunctionBody;
-NativeFunctionDeclaration ::= 'native' 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
-Type ::= [ 'readonly' ] TypePrimary;
+RegularFunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')] FunctionBody;
+NativeFunctionDeclaration ::= 'native' 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
+TypeAnnotation ::= [ 'readonly' ] Type;
 ParameterList ::= Parameter (',' Parameter)*;
-ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '>' ] [ 'extends' TypePrimary ] [ 'implements' TypePrimary (',' TypePrimary)* ] ClassBody;
+ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '>' ] [ 'extends' Type ] [ 'implements' Type (',' Type)* ] ClassBody;
 InterfaceDeclaration ::= 'interface' Identifier [ '<' GenericParameterList '>' ] InterfaceBody;
 EnumDeclaration ::= 'enum' Identifier [ '<' GenericParameterList '>' ] EnumBody;
-TypeAliasDeclaration ::= 'type' Identifier [ '<' GenericParameterList '>' ] '=' TypePrimary;
+TypeAliasDeclaration ::= 'type' Identifier [ '<' GenericParameterList '>' ] '=' Type;
 ImportPath ::= AbsoluteImportPath | ('module' '.' RelativeImportPath);
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
 MetadataTerm ::= Identifier [ StringLiteral ];
@@ -82,11 +82,11 @@ MetadataTerm ::= Identifier [ StringLiteral ];
 
 AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
-TypePrimary ::= Identifier ('.' Identifier)* [ '?' ] [ '<' GenericArgumentList '>' ];
-Parameter ::= Identifier ':' Type;
+Type ::= Identifier ('.' Identifier)* [ '?' ] [ '<' GenericArgumentList '>' ];
+Parameter ::= Identifier ':' TypeAnnotation;
 
 GenericParameterList ::= GenericParameter (',' GenericParameter)*;
-GenericArgumentList ::= TypePrimary (',' TypePrimary)*;
+GenericArgumentList ::= Type (',' Type)*;
 AbsoluteImportPathList ::= AbsoluteImportPathItem (',' AbsoluteImportPathItem)*;
 RelativeImportPathList ::= RelativeImportPathItem (',' RelativeImportPathItem)*;
 
@@ -103,7 +103,7 @@ InterfaceMember ::= InterfaceMethodDeclaration;
 EnumMemberDeclaration ::= Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
 
 EnumAssociatedValueList ::= EnumAssociatedValue (',' EnumAssociatedValue)*;
-EnumAssociatedValue ::= Identifier ':' Type;
+EnumAssociatedValue ::= Identifier ':' TypeAnnotation;
 ```
 
 ### 变量声明
@@ -464,7 +464,7 @@ BreakStatement ::= 'break' [ Identifier ];
 ContinueStatement ::= 'continue' [ Identifier ];
 ReloadStatement ::= 'reload';
 
-SwitchCase ::= 'case' (Literal | TypePrimary) [ 'when' Expression ];
+SwitchCase ::= 'case' (Literal | Type) [ 'when' Expression ];
 ```
 
 ### 表达式语句

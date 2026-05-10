@@ -78,7 +78,6 @@ TypeAliasDeclaration ::= 'type' Identifier [ '<' GenericParameterList '>' ] '=' 
 ImportPath ::= AbsoluteImportPath | ('module' '.' RelativeImportPath);
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
 MetadataTerm ::= Identifier [ StringLiteral ];
-```
 
 AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.*' | 'as' Identifier | '{' RelativeImportPathList '}' ];

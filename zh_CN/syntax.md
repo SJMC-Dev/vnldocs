@@ -93,7 +93,6 @@ FunctionBody ::= BlockStatement;
 ClassBody ::= '{' ClassMember* '}';
 InterfaceBody ::= '{' InterfaceMember* '}';
 EnumBody ::= '{' EnumMemberDeclaration* '}';
-GenericParameter ::= Identifier;
 AbsoluteImportPathItem ::= 'self' [ 'as' Identifier ] | AbsoluteImportPath;
 RelativeImportPathItem ::= 'self' [ 'as' Identifier ] | RelativeImportPath;
 

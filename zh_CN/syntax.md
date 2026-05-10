@@ -53,16 +53,15 @@ Vanillang 支持以下几种成员声明：
 
 ```ebnf
 TopIdentifierDeclaration ::= [ Metadata ] (VariableDeclaration | FunctionDeclaration | TypeDeclaration);
-MemberDeclaration ::= [ Metadata ] (PropertyDeclaration | ClassMethodDeclaration | InterfaceMethodDeclaration | EnumMemberDeclaration);
 ImportDeclaration ::= 'import' ImportPath;
 ExportDeclaration ::= 'export' ExportList;
 
 VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [ ':' TypeAnnotation ] '=' Expression;
 FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
-PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' TypeAnnotation ['=' Expression];
-ClassMethodDeclaration ::= [ 'private' | 'public' ] [ 'static' | 'override' ] FunctionDeclaration;
-InterfaceMethodDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
+PropertyDeclaration ::= [ metadata ] [ 'private' | 'public' ] [ 'static' ] Identifier ':' TypeAnnotation ['=' Expression];
+ClassMethodDeclaration ::= [ metadata ] [ 'private' | 'public' ] [ 'static' | 'override' ] FunctionDeclaration;
+InterfaceMethodDeclaration ::= [ metadata ] 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
 RegularFunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')] FunctionBody;
@@ -89,14 +88,13 @@ RelativeImportPathList ::= RelativeImportPathItem (',' RelativeImportPathItem)*;
 
 FunctionBody ::= BlockStatement;
 ClassBody ::= '{' ClassMember* '}';
-InterfaceBody ::= '{' InterfaceMember* '}';
+InterfaceBody ::= '{' InterfaceMethodDeclaration* '}';
 EnumBody ::= '{' EnumMemberDeclaration* '}';
 AbsoluteImportPathItem ::= 'self' [ 'as' Identifier ] | AbsoluteImportPath;
 RelativeImportPathItem ::= 'self' [ 'as' Identifier ] | RelativeImportPath;
 
 ClassMember ::= PropertyDeclaration | ClassMethodDeclaration;
-InterfaceMember ::= InterfaceMethodDeclaration;
-EnumMemberDeclaration ::= Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
+EnumMemberDeclaration ::= [ metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
 
 EnumAssociatedValueList ::= EnumAssociatedValue (',' EnumAssociatedValue)*;
 EnumAssociatedValue ::= Identifier ':' TypeAnnotation;

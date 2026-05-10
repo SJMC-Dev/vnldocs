@@ -52,8 +52,6 @@ Vanillang 支持以下几种成员声明：
 下面给出声明的产生式：
 
 ```ebnf
-Declaration ::= TopIdentifierDeclaration | MemberDeclaration | ImportDeclaration | ExportDeclaration;
-
 TopIdentifierDeclaration ::= [ Metadata ] (VariableDeclaration | FunctionDeclaration | TypeDeclaration);
 MemberDeclaration ::= [ Metadata ] (PropertyDeclaration | ClassMethodDeclaration | InterfaceMethodDeclaration | EnumMemberDeclaration);
 ImportDeclaration ::= 'import' ImportPath;

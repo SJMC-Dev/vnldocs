@@ -59,9 +59,9 @@ ExportDeclaration ::= 'export' ExportList;
 VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [ ':' TypeAnnotation ] '=' Expression;
 FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
-PropertyDeclaration ::= [ metadata ] [ 'private' | 'public' ] [ 'static' ] Identifier ':' TypeAnnotation ['=' Expression];
-ClassMethodDeclaration ::= [ metadata ] [ 'private' | 'public' ] [ 'static' | 'override' ] FunctionDeclaration;
-InterfaceMethodDeclaration ::= [ metadata ] 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
+PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' TypeAnnotation ['=' Expression];
+ClassMethodDeclaration ::= [ 'private' | 'public' ] [ 'static' | 'override' ] FunctionDeclaration;
+InterfaceMethodDeclaration ::= [ Metadata ] 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
 RegularFunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')] FunctionBody;
@@ -93,8 +93,8 @@ EnumBody ::= '{' EnumMemberDeclaration* '}';
 AbsoluteImportPathItem ::= 'self' [ 'as' Identifier ] | AbsoluteImportPath;
 RelativeImportPathItem ::= 'self' [ 'as' Identifier ] | RelativeImportPath;
 
-ClassMember ::= PropertyDeclaration | ClassMethodDeclaration;
-EnumMemberDeclaration ::= [ metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
+ClassMember ::= [ Metadata ] (PropertyDeclaration | ClassMethodDeclaration);
+EnumMemberDeclaration ::= [ Metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
 
 EnumAssociatedValueList ::= EnumAssociatedValue (',' EnumAssociatedValue)*;
 EnumAssociatedValue ::= Identifier ':' TypeAnnotation;

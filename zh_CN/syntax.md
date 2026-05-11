@@ -81,7 +81,7 @@ RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ 
 Type ::= Identifier ('.' Identifier)* [ '?' ] [ '<' GenericArgumentList '>' ];
 Parameter ::= Identifier ':' TypeAnnotation;
 
-GenericParameterList ::= GenericParameter (',' GenericParameter)*;
+GenericParameterList ::= Identifier (',' Identifier)*;
 GenericArgumentList ::= Type (',' Type)*;
 AbsoluteImportPathList ::= AbsoluteImportPathItem (',' AbsoluteImportPathItem)*;
 RelativeImportPathList ::= RelativeImportPathItem (',' RelativeImportPathItem)*;

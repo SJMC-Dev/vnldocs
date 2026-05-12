@@ -61,11 +61,11 @@ FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
 PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' TypeAnnotation ['=' Expression];
 ClassMethodDeclaration ::= [ 'private' | 'public' ] [ 'static' | 'override' ] FunctionDeclaration;
-InterfaceMethodDeclaration ::= [ Metadata ] 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
+InterfaceMethodDeclaration ::= [ Metadata ] FunctionSignature;
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
-RegularFunctionDeclaration ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')] FunctionBody;
-NativeFunctionDeclaration ::= 'native' 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
+RegularFunctionDeclaration ::= FunctionSignature FunctionBody;
+NativeFunctionDeclaration ::= 'native' FunctionSignature;
 TypeAnnotation ::= [ 'readonly' ] Type;
 ParameterList ::= Parameter (',' Parameter)*;
 ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '>' ] [ 'extends' Type ] [ 'implements' Type (',' Type)* ] ClassBody;
@@ -75,6 +75,7 @@ TypeAliasDeclaration ::= 'type' Identifier [ '<' GenericParameterList '>' ] '=' 
 ImportPath ::= AbsoluteImportPath | ('module' '.' RelativeImportPath);
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
 MetadataTerm ::= Identifier [ StringLiteral ];
+FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
 
 AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.*' | 'as' Identifier | '{' RelativeImportPathList '}' ];

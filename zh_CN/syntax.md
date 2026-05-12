@@ -56,7 +56,7 @@ TopIdentifierDeclaration ::= [ Metadata ] (VariableDeclaration | FunctionDeclara
 ImportDeclaration ::= 'import' ImportPath;
 ExportDeclaration ::= 'export' ExportList;
 
-VariableDeclaration ::= ('var' | 'let' | 'const') Identifier [ ':' TypeAnnotation ] '=' Expression;
+VariableDeclaration ::= VariableDeclarationPrimary '=' Expression;
 FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
 PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' TypeAnnotation ['=' Expression];
@@ -64,6 +64,7 @@ ClassMethodDeclaration ::= [ 'private' | 'public' ] [ 'static' | 'override' ] Fu
 InterfaceMethodDeclaration ::= [ Metadata ] FunctionSignature;
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
+VariableDeclarationPrimary ::= ('var' | 'let' | 'const') Identifier [ ':' TypeAnnotation ];
 RegularFunctionDeclaration ::= FunctionSignature FunctionBody;
 NativeFunctionDeclaration ::= 'native' FunctionSignature;
 TypeAnnotation ::= [ 'readonly' ] Type;
@@ -453,7 +454,7 @@ ControlFlowStatement ::= IfStatement | SwitchStatement | WhileStatement | ForSta
 IfStatement ::= 'if' '(' Expression ')' Statement [ 'else' Statement ];
 SwitchStatement ::= 'switch' '(' Expression ')' '{' (SwitchCase '->' Statement)* [ 'default' '->' Statement ] '}';
 WhileStatement ::= [ 'label' Identifier ] 'while' '(' Expression ')' Statement;
-ForStatement ::= [ 'label' Identifier ] 'for' '(' ('var' | 'let' | 'const') Identifier 'in' Expression ')' Statement;
+ForStatement ::= [ 'label' Identifier ] 'for' '(' VariableDeclarationPrimary 'in' Expression ')' Statement;
 ReturnStatement ::= 'return' [ Expression ];
 BreakStatement ::= 'break' [ Identifier ];
 ContinueStatement ::= 'continue' [ Identifier ];

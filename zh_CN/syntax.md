@@ -251,7 +251,7 @@ MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpr
 UnaryExpression ::= ('!' | '~' | '-' | '+')* ExponentialExpression;
 ExponentialExpression ::= PostfixExpression [ '**' ExponentialExpression ];
 PostfixExpression ::= PrimaryExpression PostfixSuffix*;
-PrimaryExpression ::= '(' Expression ')' | Literal | Identifier;
+PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'super';
 
 AssignmentOperator ::= '=' | '??=' | '+=' | '-=' | '*=' | '/=' | '//=' | '%=' | '**=' | '&=' | '^=' | '|=' | '<<=' | '>>=' | '>>>=';
 PostfixSuffix ::= (('.' | '?.') Identifier) | '(' [ ArgumentList ] ')' | '[' Expression ']';

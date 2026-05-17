@@ -78,8 +78,8 @@ ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier 
 MetadataTerm ::= GeneralizedIdentifier [ SimpleStringLiteral ];
 FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
 
-AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
-RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
+AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.' '*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
+RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.' '*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
 Type ::= Identifier ('.' Identifier)* [ '?' ] [ '<' GenericArgumentList '>' ];
 Parameter ::= Identifier ':' TypeAnnotation;
 

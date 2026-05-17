@@ -75,7 +75,7 @@ EnumDeclaration ::= 'enum' Identifier [ '<' GenericParameterList '>' ] EnumBody;
 TypeAliasDeclaration ::= 'type' Identifier [ '<' GenericParameterList '>' ] '=' Type;
 ImportPath ::= AbsoluteImportPath | ('module' '.' RelativeImportPath);
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
-MetadataTerm ::= GeneralizedIdentifier [ StringLiteral ];
+MetadataTerm ::= GeneralizedIdentifier [ SimpleStringLiteral ];
 FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
 
 AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];

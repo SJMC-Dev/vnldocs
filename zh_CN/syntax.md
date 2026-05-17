@@ -80,7 +80,7 @@ FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnn
 
 AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.' '*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.' '*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
-Type ::= Identifier ('.' Identifier)* [ '?' ] [ '<' GenericArgumentList '>' ];
+Type ::= Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ] [ '?' ];
 Parameter ::= Identifier ':' TypeAnnotation;
 
 GenericParameterList ::= Identifier (',' Identifier)*;

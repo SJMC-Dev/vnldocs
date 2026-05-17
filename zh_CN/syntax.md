@@ -59,8 +59,7 @@ ExportDeclaration ::= 'export' ExportList;
 VariableDeclaration ::= VariableDeclarationPrimary '=' Expression;
 FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
-PropertyDeclaration ::= [ 'private' | 'public' ] [ 'static' ] Identifier ':' TypeAnnotation ['=' Expression];
-ClassMethodDeclaration ::= [ 'private' | 'public' ] [ 'static' | 'override' ] FunctionDeclaration;
+PropertyDeclaration ::= Identifier ':' TypeAnnotation ['=' Expression];
 InterfaceMethodDeclaration ::= [ Metadata ] FunctionSignature;
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
@@ -95,7 +94,7 @@ EnumBody ::= '{' EnumMemberDeclaration* '}';
 AbsoluteImportPathItem ::= 'self' [ 'as' Identifier ] | AbsoluteImportPath;
 RelativeImportPathItem ::= 'self' [ 'as' Identifier ] | RelativeImportPath;
 
-ClassMember ::= [ Metadata ] (PropertyDeclaration | ClassMethodDeclaration);
+ClassMember ::= [ Metadata ] [ 'private' | 'public' ] ([ 'static' ] PropertyDeclaration | [ 'static' | 'override' ] FunctionDeclaration);
 EnumMemberDeclaration ::= [ Metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
 
 EnumAssociatedValueList ::= EnumAssociatedValue (',' EnumAssociatedValue)*;

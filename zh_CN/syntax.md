@@ -233,7 +233,7 @@ Vanillang 表达式是由一个或多个操作数和一个或多个运算符组�
 
 ```ebnf
 Expression ::= AssignmentExpression;
-AssignmentExpression ::= ConditionalExpression [ AssignmentOperator AssignmentExpression ];
+AssignmentExpression ::= ConditionalExpression [ ('=' | '??=' | '+=' | '-=' | '*=' | '/=' | '//=' | '%=' | '**=' | '&=' | '^=' | '|=' | '<<=' | '>>=' | '>>>=') AssignmentExpression ];
 ConditionalExpression ::= NullishCoalescingExpression [ '?' AssignmentExpression ':' ConditionalExpression ];
 NullishCoalescingExpression ::= LogicalOrExpression ('??' LogicalOrExpression)*;
 LogicalOrExpression ::= LogicalAndExpression ('||' LogicalAndExpression)*;
@@ -252,7 +252,6 @@ ExponentialExpression ::= PostfixExpression [ '**' ExponentialExpression ];
 PostfixExpression ::= PrimaryExpression PostfixSuffix*;
 PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'super';
 
-AssignmentOperator ::= '=' | '??=' | '+=' | '-=' | '*=' | '/=' | '//=' | '%=' | '**=' | '&=' | '^=' | '|=' | '<<=' | '>>=' | '>>>=';
 PostfixSuffix ::= (('.' | '?.') Identifier) | '(' [ ArgumentList ] ')' | '[' Expression ']';
 Literal ::= Number | Char | String | Boolean | ListLiteral | DictLiteral | SNBTArray | Selector;
 

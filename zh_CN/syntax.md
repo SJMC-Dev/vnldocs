@@ -249,10 +249,9 @@ AdditiveExpression ::= MultiplicativeExpression (('+' | '-') MultiplicativeExpre
 MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpression)*;
 UnaryExpression ::= [ '!' | '~' | '-' | '+' ] ExponentialExpression;
 ExponentialExpression ::= PostfixExpression [ '**' UnaryExpression ];
-PostfixExpression ::= PrimaryExpression PostfixSuffix*;
+PostfixExpression ::= PrimaryExpression ((('.' | '?.') Identifier) | ('(' [ ArgumentList ] ')') | ('[' Expression ']'))*;
 PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'super';
 
-PostfixSuffix ::= (('.' | '?.') Identifier) | '(' [ ArgumentList ] ')' | '[' Expression ']';
 Literal ::= Number | Char | String | Boolean | ListLiteral | DictLiteral | SNBTArray | Selector;
 
 String ::= StringLiteral [ Interpolation StringPart* StringLiteral ];

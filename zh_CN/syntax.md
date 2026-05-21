@@ -216,11 +216,11 @@ Vanillang 表达式是由一个或多个操作数和一个或多个运算符组�
 | 3      | `!`、`~`、`-`（单目）、`+`（单目）                                                              | 右结合   |
 | 4      | `*`、`/`、`//`、`%`                                                                             | 左结合   |
 | 5      | `+`、`-`                                                                                        | 左结合   |
-| 6      | `..`                                                                                            | 左结合   |
-| 7      | `<<`、`>>`、`>>>`                                                                               | 左结合   |
-| 8      | `&`                                                                                             | 左结合   |
-| 9      | `^`                                                                                             | 左结合   |
-| 10     | `\|`                                                                                            | 左结合   |
+| 6      | `<<`、`>>`、`>>>`                                                                               | 左结合   |
+| 7      | `&`                                                                                             | 左结合   |
+| 8      | `^`                                                                                             | 左结合   |
+| 9      | `\|`                                                                                            | 左结合   |
+| 10     | `..`                                                                                            | 左结合   |
 | 11     | `<`、`<=`、`>`、`>=`、`instanceof`                                                              | 左结合   |
 | 12     | `==`、`!=`                                                                                      | 左结合   |
 | 13     | `&&`                                                                                            | 左结合   |
@@ -239,12 +239,12 @@ NullishCoalescingExpression ::= LogicalOrExpression ('??' LogicalOrExpression)*;
 LogicalOrExpression ::= LogicalAndExpression ('||' LogicalAndExpression)*;
 LogicalAndExpression ::= EqualityExpression ('&&' EqualityExpression)*;
 EqualityExpression ::= RelationalExpression (('==' | '!=') RelationalExpression)*;
-RelationalExpression ::= BitwiseOrExpression (('<' | '<=' | '>' | '>=' | 'instanceof') BitwiseOrExpression)*;
+RelationalExpression ::= RangeExpression (('<' | '<=' | '>' | '>=' | 'instanceof') RangeExpression)*;
+RangeExpression ::= (BitwiseOrExpression [ '..' [ BitwiseOrExpression ] ]) | ('..' BitwiseOrExpression);
 BitwiseOrExpression ::= BitwiseXorExpression ('|' BitwiseXorExpression)*;
 BitwiseXorExpression ::= BitwiseAndExpression ('^' BitwiseAndExpression)*;
 BitwiseAndExpression ::= ShiftExpression ('&' ShiftExpression)*;
-ShiftExpression ::= RangeExpression (('<<' | '>>' | '>>>') RangeExpression)*;
-RangeExpression ::= (AdditiveExpression [ '..' [ AdditiveExpression ] ]) | ('..' AdditiveExpression);
+ShiftExpression ::= AdditiveExpression (('<<' | '>>' | '>>>') AdditiveExpression)*;
 AdditiveExpression ::= MultiplicativeExpression (('+' | '-') MultiplicativeExpression)*;
 MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpression)*;
 UnaryExpression ::= ('!' | '~' | '-' | '+')* ExponentialExpression;

@@ -248,7 +248,7 @@ ShiftExpression ::= AdditiveExpression (('<<' | '>>' | '>>>') AdditiveExpression
 AdditiveExpression ::= MultiplicativeExpression (('+' | '-') MultiplicativeExpression)*;
 MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpression)*;
 UnaryExpression ::= [ '!' | '~' | '-' | '+' ] ExponentialExpression;
-ExponentialExpression ::= PostfixExpression [ '**' ExponentialExpression ];
+ExponentialExpression ::= PostfixExpression [ '**' UnaryExpression ];
 PostfixExpression ::= PrimaryExpression PostfixSuffix*;
 PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'super';
 

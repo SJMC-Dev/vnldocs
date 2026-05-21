@@ -267,7 +267,7 @@ StringPart ::= StringLiteral | Interpolation;
 DictEntry ::= (Identifier | StringLiteral) ':' Expression;
 SelectorArgumentList ::= SelectorArgument (',' SelectorArgument)*;
 
-SelectorArgument ::= Identifier '=' Expression;
+SelectorArgument ::= GeneralizedIdentifier '=' Expression;
 ```
 
 ### 基础表达式

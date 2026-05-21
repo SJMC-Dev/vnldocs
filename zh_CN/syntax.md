@@ -252,13 +252,12 @@ ExponentialExpression ::= PostfixExpression [ '**' UnaryExpression ];
 PostfixExpression ::= PrimaryExpression ((('.' | '?.') Identifier) | ('(' [ ArgumentList ] ')') | ('[' Expression ']'))*;
 PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'super';
 
-Literal ::= Number | Char | String | Boolean | ListLiteral | DictLiteral | SNBTArray | Selector;
+Literal ::= Number | Char | String | Boolean | ListLikeLiteral | DictLiteral | Selector;
 
 String ::= StringLiteral [ Interpolation StringPart* StringLiteral ];
 Boolean ::= 'true' | 'false';
-ListLiteral ::= '[' [ Expression (',' Expression)* ] ']';
+ListLikeLiteral ::= '[' [ ('B' | 'I' | 'L') ';' ] [ Expression (',' Expression)* ] ']';
 DictLiteral ::= '{' [ DictEntry (',' DictEntry)* ] '}';
-SNBTArray ::= '[' ('B' | 'I' | 'L') ';' [ Expression (',' Expression)* ] ']';
 Selector ::= ('@p' | '@r' | '@a' | '@e' | '@s' | '@n') [ '[' SelectorArgumentList ']' ];
 ArgumentList ::= Expression (',' Expression)*;
 

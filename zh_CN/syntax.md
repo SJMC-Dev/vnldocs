@@ -262,7 +262,7 @@ Selector ::= ('@p' | '@r' | '@a' | '@e' | '@s' | '@n') [ '[' SelectorArgumentLis
 ArgumentList ::= Expression (',' Expression)*;
 
 Interpolation ::= '$(' Expression ')';
-DictEntry ::= (Identifier | StringLiteral) ':' Expression;
+DictEntry ::= (GeneralizedIdentifier | StringLiteral) ':' Expression;
 SelectorArgumentList ::= SelectorArgument (',' SelectorArgument)*;
 
 SelectorArgument ::= GeneralizedIdentifier '=' Expression;

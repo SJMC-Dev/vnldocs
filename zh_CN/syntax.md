@@ -254,7 +254,7 @@ PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'supe
 
 Literal ::= Number | Char | String | Boolean | ListLikeLiteral | DictLiteral | Selector;
 
-String ::= StringLiteral [ Interpolation StringPart* StringLiteral ];
+String ::= StringLiteral [ (StringLiteral | Interpolation)* ];
 Boolean ::= 'true' | 'false';
 ListLikeLiteral ::= '[' [ ('B' | 'I' | 'L') ';' ] [ Expression (',' Expression)* ] ']';
 DictLiteral ::= '{' [ DictEntry (',' DictEntry)* ] '}';
@@ -262,7 +262,6 @@ Selector ::= ('@p' | '@r' | '@a' | '@e' | '@s' | '@n') [ '[' SelectorArgumentLis
 ArgumentList ::= Expression (',' Expression)*;
 
 Interpolation ::= '$(' Expression ')';
-StringPart ::= StringLiteral | Interpolation;
 DictEntry ::= (Identifier | StringLiteral) ':' Expression;
 SelectorArgumentList ::= SelectorArgument (',' SelectorArgument)*;
 

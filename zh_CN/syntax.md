@@ -444,12 +444,12 @@ Statement ::= ExpressionStatement | VariableDeclarationStatement | BlockStatemen
 ExpressionStatement ::= Expression;
 VariableDeclarationStatement ::= VariableDeclaration;
 BlockStatement ::= '{' Statement* '}';
-ControlFlowStatement ::= IfStatement | SwitchStatement | WhileStatement | ForStatement | ReturnStatement | BreakStatement | ContinueStatement | ReloadStatement;
+ControlFlowStatement ::= IfStatement | SwitchStatement | [ 'label' Identifier ] WhileStatement | [ 'label' Identifier ] ForStatement | ReturnStatement | BreakStatement | ContinueStatement | ReloadStatement;
 
 IfStatement ::= 'if' '(' Expression ')' Statement [ 'else' Statement ];
 SwitchStatement ::= 'switch' '(' Expression ')' '{' (SwitchCase '->' Statement)* [ 'default' '->' Statement ] '}';
-WhileStatement ::= [ 'label' Identifier ] 'while' '(' Expression ')' Statement;
-ForStatement ::= [ 'label' Identifier ] 'for' '(' VariableDeclarationPrimary 'in' Expression ')' Statement;
+WhileStatement ::= 'while' '(' Expression ')' Statement;
+ForStatement ::= 'for' '(' VariableDeclarationPrimary 'in' Expression ')' Statement;
 ReturnStatement ::= 'return' [ Expression ];
 BreakStatement ::= 'break' [ Identifier ];
 ContinueStatement ::= 'continue' [ Identifier ];

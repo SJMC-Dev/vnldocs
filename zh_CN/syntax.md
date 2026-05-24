@@ -455,7 +455,7 @@ BreakStatement ::= 'break' [ Identifier ];
 ContinueStatement ::= 'continue' [ Identifier ];
 ReloadStatement ::= 'reload';
 
-SwitchCase ::= 'case' (Literal | Type) [ 'when' Expression ];
+SwitchCase ::= ('case' Literal) | ('case' Type [ 'when' Expression ]);
 ```
 
 ### 表达式语句

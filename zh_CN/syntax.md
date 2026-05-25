@@ -91,8 +91,8 @@ FunctionBody ::= BlockStatement;
 ClassBody ::= '{' ClassMember* '}';
 InterfaceBody ::= '{' InterfaceMethodDeclaration* '}';
 EnumBody ::= '{' EnumMemberDeclaration* '}';
-AbsoluteImportPathItem ::= 'self' [ 'as' Identifier ] | AbsoluteImportPath;
-RelativeImportPathItem ::= 'self' [ 'as' Identifier ] | RelativeImportPath;
+AbsoluteImportPathItem ::= 'self' [ 'as' Identifier ] | AbsoluteImportPath | '*';
+RelativeImportPathItem ::= 'self' [ 'as' Identifier ] | RelativeImportPath | '*';
 
 ClassMember ::= [ Metadata ] [ 'private' | 'public' ] ([ 'static' ] PropertyDeclaration | [ 'static' | 'override' ] FunctionDeclaration);
 EnumMemberDeclaration ::= [ Metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];

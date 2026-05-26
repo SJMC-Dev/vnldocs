@@ -259,7 +259,7 @@ Boolean ::= 'true' | 'false';
 ListLikeLiteral ::= '[' [ ('B' | 'I' | 'L') ';' ] [ Expression (',' Expression)* ] ']';
 DictLiteral ::= '{' [ DictEntry (',' DictEntry)* ] '}';
 Selector ::= ('@p' | '@r' | '@a' | '@e' | '@s' | '@n') [ '[' SelectorArgumentList ']' ];
-ArgumentList ::= Expression (',' Expression)*;
+ArgumentList ::= (Expression (',' Expression)* [ 'context' '=' Expression ]) | ('context' '=' Expression);
 
 Interpolation ::= '$(' Expression ')';
 DictEntry ::= (GeneralizedIdentifier | StringLiteral) ':' Expression;

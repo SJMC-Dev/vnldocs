@@ -72,27 +72,24 @@ ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '
 InterfaceDeclaration ::= 'interface' Identifier [ '<' GenericParameterList '>' ] InterfaceBody;
 EnumDeclaration ::= 'enum' Identifier [ '<' GenericParameterList '>' ] EnumBody;
 TypeAliasDeclaration ::= 'type' Identifier [ '<' GenericParameterList '>' ] '=' Type;
-ImportPath ::= AbsoluteImportPath | ('module' '.' RelativeImportPath);
+ImportPath ::= Identifier ('.' Identifier)* [ '.' '*' | 'as' Identifier | '{' ImportPathList '}' ];
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
 MetadataTerm ::= GeneralizedIdentifier [ SimpleStringLiteral ];
 FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
 
-AbsoluteImportPath ::= Identifier ('.' Identifier)* [ '.' '*' | 'as' Identifier | '{' AbsoluteImportPathList '}' ];
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.' '*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
 Type ::= Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ] [ '?' ];
 Parameter ::= Identifier ':' TypeAnnotation;
 
 GenericParameterList ::= Identifier (',' Identifier)*;
 GenericArgumentList ::= Type (',' Type)*;
-AbsoluteImportPathList ::= AbsoluteImportPathItem (',' AbsoluteImportPathItem)*;
-RelativeImportPathList ::= RelativeImportPathItem (',' RelativeImportPathItem)*;
+ImportPathList ::= ImportPathItem (',' ImportPathItem)*;
 
 FunctionBody ::= BlockStatement;
 ClassBody ::= '{' ClassMember* '}';
 InterfaceBody ::= '{' InterfaceMethodDeclaration* '}';
 EnumBody ::= '{' EnumMemberDeclaration* '}';
-AbsoluteImportPathItem ::= 'self' [ 'as' Identifier ] | AbsoluteImportPath | '*';
-RelativeImportPathItem ::= 'self' [ 'as' Identifier ] | RelativeImportPath | '*';
+ImportPathItem ::= 'self' [ 'as' Identifier ] | ImportPath | '*';
 
 ClassMember ::= [ Metadata ] [ 'private' | 'public' ] ([ 'static' ] PropertyDeclaration | [ 'static' | 'override' ] FunctionDeclaration);
 EnumMemberDeclaration ::= [ Metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];

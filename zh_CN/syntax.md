@@ -90,7 +90,8 @@ InterfaceBody ::= '{' InterfaceMethodDeclaration* '}';
 EnumBody ::= '{' EnumMemberDeclaration* '}';
 ImportPathItem ::= 'self' [ 'as' Identifier ] | ImportPath | '*';
 
-ClassMember ::= [ Metadata ] [ 'private' | 'public' ] ([ 'static' ] PropertyDeclaration | [ 'static' | 'override' ] FunctionDeclaration);
+ClassMember ::= [ Metadata ] (([ 'private' | 'public' ] ([ 'static' ] PropertyDeclaration | [ 'static' | 'override' ] FunctionDeclaration)) | Constructor);
+Constructor ::= 'init' '(' [ ParameterList ] ')' FunctionBody
 EnumMemberDeclaration ::= [ Metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
 
 EnumAssociatedValueList ::= EnumAssociatedValue (',' EnumAssociatedValue)*;

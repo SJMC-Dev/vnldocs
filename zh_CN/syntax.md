@@ -63,7 +63,7 @@ PropertyDeclaration ::= Identifier ':' TypeAnnotation ['=' Expression];
 InterfaceMethodDeclaration ::= [ Metadata ] FunctionSignature;
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
-VariableDeclarationPrimary ::= ('var' | 'let' | 'const') Identifier [ ':' TypeAnnotation ];
+VariableDeclarationPrimary ::= 'let' Identifier [ ':' TypeAnnotation ];
 RegularFunctionDeclaration ::= FunctionSignature FunctionBody;
 NativeFunctionDeclaration ::= 'native' FunctionSignature;
 TypeAnnotation ::= [ 'readonly' ] Type;
@@ -100,15 +100,15 @@ EnumAssociatedValue ::= Identifier ':' TypeAnnotation;
 
 ### 变量声明
 
-变量声明用于声明一个变量，可以使用 `var`、`let` 或 `const` 关键字，分别表示变量、运行时常量和编译时常量。变量声明必须包含一个初始化表达式，变量的类型可以通过类型注解指定，如果没有指定类型，则由编译器根据初始化表达式推断类型。注意：当使用 `let` 或 `const` 声明时，无论是否指定类型注解，或类型注释是否具有 `readonly` 修饰符，编译器都会将该变量视为只读的，例如，当声明的类型为 `Text` 时，该变量的实际类型为 `readonly Text`。
+变量声明使用 `let` 关键字，除 `for` 语句循环变量以外，必须包含一个初始化表达式，变量的类型可以通过类型注解指定，如果没有指定类型，则由编译器根据初始化表达式推断类型。
 
 下面是一些变量声明的示例：
 
 ```vanillang
-var x: int = 10
-var y = 0xFF
+let x: int = 10
+let y: int = 0xFF
 let name: string = "Vanillang"
-const PI: float = 3.14159f
+let PI: float = 3.14159f
 ```
 
 ### 函数声明
@@ -469,9 +469,9 @@ greet("Vanillang")
 变量声明语句由一个变量声明组成，用于声明一个变量：
 
 ```vanillang
-var x: int = 10
+let x: int = 10
 let name: string = "Vanillang"
-const PI: float = 3.14159f
+let PI: float = 3.14159f
 ```
 
 ### 块语句
@@ -480,7 +480,7 @@ const PI: float = 3.14159f
 
 ```vanillang
 {
-    var x: int = 10
+    let x: int = 10
     world.print(x)
 }
 ```
@@ -512,7 +512,7 @@ while (player.health > 0) {
 }
 
 label outer
-for (var enemy in nearbyEnemies) {
+for (let enemy in nearbyEnemies) {
     enemy.takeDamage(5)
 
     while (enemy.health > 0) {

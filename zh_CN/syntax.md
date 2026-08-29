@@ -59,14 +59,13 @@ ExportDeclaration ::= 'export' ExportList;
 VariableDeclaration ::= VariableDeclarationPrimary '=' Expression;
 FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
-PropertyDeclaration ::= Identifier ':' TypeAnnotation ['=' Expression];
+PropertyDeclaration ::= Identifier ':' Type ['=' Expression];
 InterfaceMethodDeclaration ::= [ Metadata ] FunctionSignature;
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
-VariableDeclarationPrimary ::= 'let' Identifier [ ':' TypeAnnotation ];
+VariableDeclarationPrimary ::= 'let' Identifier [ ':' Type ];
 RegularFunctionDeclaration ::= FunctionSignature FunctionBody;
 NativeFunctionDeclaration ::= 'native' FunctionSignature;
-TypeAnnotation ::= [ 'readonly' ] Type;
 ParameterList ::= Parameter (',' Parameter)*;
 ClassDeclaration ::= [ 'final' ] 'class' Identifier [ '<' GenericParameterList '>' ] [ 'extends' Type ] [ 'implements' Type (',' Type)* ] ClassBody;
 InterfaceDeclaration ::= 'interface' Identifier [ '<' GenericParameterList '>' ] InterfaceBody;
@@ -75,11 +74,11 @@ TypeAliasDeclaration ::= 'type' Identifier [ '<' GenericParameterList '>' ] '=' 
 ImportPath ::= Identifier ('.' Identifier)* [ '.' '*' | 'as' Identifier | '{' ImportPathList '}' ];
 ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
 MetadataTerm ::= GeneralizedIdentifier [ SimpleStringLiteral ];
-FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (TypeAnnotation | 'void')];
+FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
 
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.' '*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
 Type ::= Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ] [ '?' ];
-Parameter ::= Identifier ':' TypeAnnotation;
+Parameter ::= Identifier ':' Type;
 
 GenericParameterList ::= Identifier (',' Identifier)*;
 GenericArgumentList ::= Type (',' Type)*;
@@ -95,7 +94,7 @@ ClassMember ::= [ Metadata ] [ 'private' | 'public' ] ([ 'static' ] PropertyDecl
 EnumMemberDeclaration ::= [ Metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
 
 EnumAssociatedValueList ::= EnumAssociatedValue (',' EnumAssociatedValue)*;
-EnumAssociatedValue ::= Identifier ':' TypeAnnotation;
+EnumAssociatedValue ::= Identifier ':' Type;
 ```
 
 ### 变量声明
@@ -157,7 +156,7 @@ type NamespaceId = string
 
 ### 属性声明
 
-类成员属性声明用于声明一个类的成员属性，可以使用 `private` 或 `public` 关键字指定访问修饰符，使用 `static` 关键字指定静态属性。类成员属性必须包含一个类型注解，类型注解可以具有 `readonly` 修饰符，表示该属性是只读的。类成员属性可以选择性地包含一个初始化表达式。对于静态属性，若不包含初始化表达式，则会被初始化为该类型的默认值，要求该类型为基本类型或具有无参构造函数；对于实例属性，若不包含初始化表达式，则必须在构造函数中进行初始化，否则编译器会报错。
+类成员属性声明用于声明一个类的成员属性，可以使用 `private` 或 `public` 关键字指定访问修饰符，使用 `static` 关键字指定静态属性。类成员属性必须包含一个类型注解，对于静态属性，可以选择性地包含一个初始化表达式，若不包含初始化表达式，则会被初始化为该类型的默认值，要求该类型为基本类型或具有无参构造函数；对于实例属性，不应该包含初始化表达式，必须在构造函数中进行初始化。
 
 下面是一些类成员属性声明的示例：
 

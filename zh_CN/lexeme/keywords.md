@@ -32,6 +32,7 @@ Vanillang 关键字具有特殊用途，不可作用标识符，下面的表格�
 | `callee`   | 表示当前函数本身                                 | `return n * callee(n-1)`                                                                |
 | `in`       | 用于遍历可迭代对象                               | `for (let i in 0..9)`                                                                   |
 | `reload`   | 用于重新加载当前数据包，必须在函数体内使用       | `func reloadDataPack() -> void { reload }`                                              |
+| `init`     | 用于声明类的构造函数                             | `init(value: int) { this.value = value }`                                               |
 
 ## 类型系统与面向对象
 

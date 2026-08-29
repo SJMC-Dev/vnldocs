@@ -246,7 +246,7 @@ AdditiveExpression ::= MultiplicativeExpression (('+' | '-') MultiplicativeExpre
 MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpression)*;
 UnaryExpression ::= [ '!' | '~' | '-' | '+' ] ExponentialExpression;
 ExponentialExpression ::= PostfixExpression [ '**' UnaryExpression ];
-PostfixExpression ::= PrimaryExpression ((('.' | '?.') Identifier) | ('(' [ ArgumentList ] ')') | ('[' Expression ']'))*;
+PostfixExpression ::= PrimaryExpression ((('.' | '?.') GeneralizedIdentifier) | ('(' [ ArgumentList ] ')') | ('[' Expression ']'))*;
 PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'super';
 
 Literal ::= Number | Char | String | Boolean | ListLikeLiteral | DictLiteral | Selector;

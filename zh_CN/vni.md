@@ -8,7 +8,7 @@ Vanillang 模块接口文件以 `.vni` 作为后缀，其本质是一个 JSON �
 
 | 属性     | 类型   | 解释                                                                                                                                                                   |
 | -------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| category | string | 该标识符的类别，取值可以为 `let`、`func`、`class`、`interface`、`enum`、`typealias`、`property`、`method`、`parameter`、`enummember`、`imported`                       |
+| category | string | 该标识符的类别，取值可以为 `let`、`func`、`class`、`interface`、`enum`、`typealias`、`property`、`method`、`parameter`、`enummember`、`enumvalue` 、`imported`         |
 | metadata | object | 元数据信息，仅当标识符具有元数据且不为 `imported` 时存在，键名为元数据项，值为 string 类型或 null，对于需要提供元数据值的元数据项，其值为 string 类型，否则其值为 null |
 
 根据 `category` 值的不同，其余属性的值也有所不同。                      |
@@ -81,9 +81,15 @@ Vanillang 模块接口文件以 `.vni` 作为后缀，其本质是一个 JSON �
 
 ### enummember 类别
 
-| 属性 | 类型   | 解释                                     |
-| ---- | ------ | ---------------------------------------- |
-| type | string | 枚举成员类型，格式与源代码的类型语法一致 |
+| 属性            | 类型   | 解释                                                  |
+| --------------- | ------ | ----------------------------------------------------- |
+| assocatedValues | object | 枚举成员的关联值，其属性应该是 `enumvalue` 类别的对象 |
+
+### enumvalue 类别
+
+| 属性 | 类型   | 解释                                         |
+| ---- | ------ | -------------------------------------------- |
+| type | string | 枚举关联值的类型，格式与源代码的类型语法一致 |
 
 ### imported 类别
 

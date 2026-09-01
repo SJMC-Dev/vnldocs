@@ -31,6 +31,7 @@ Vanillang 模块接口文件以 `.vni` 作为后缀，其本质是一个 JSON �
 
 | 属性              | 类型          | 解释                                   |
 | ----------------- | ------------- | -------------------------------------- |
+| baseClass         | string        | 基类的名称，若无基类则为 null          |
 | final             | boolean       | 是否为 final 类                        |
 | genericParameters | array<string> | 泛型参数列表                           |
 | properties        | object        | 成员属性，由 `property` 类别的对象组成 |

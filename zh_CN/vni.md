@@ -61,10 +61,11 @@ Vanillang 模块接口文件以 `.vni` 作为后缀，其本质是一个 JSON �
 
 ### property 类别
 
-| 属性           | 类型   | 解释                                                    |
-| -------------- | ------ | ------------------------------------------------------- |
-| type           | string | 属性类型，格式与源代码的类型语法一致                    |
-| accessModifier | string | 访问修饰符，取值可以为 `public`、`protected`、`private` |
+| 属性           | 类型    | 解释                                                    |
+| -------------- | ------- | ------------------------------------------------------- |
+| type           | string  | 属性类型，格式与源代码的类型语法一致                    |
+| static         | boolean | 是否为静态属性                                          |
+| accessModifier | string  | 访问修饰符，取值可以为 `public`、`protected`、`private` |
 
 ### method 类别
 
@@ -72,6 +73,7 @@ Vanillang 模块接口文件以 `.vni` 作为后缀，其本质是一个 JSON �
 | -------------- | ------- | ------------------------------------------------------- |
 | returnType     | string  | 方法返回值类型，格式与源代码的类型语法一致              |
 | parameters     | object  | 方法参数，其属性应该是 `parameter` 类别的对象           |
+| static         | boolean | 是否为静态方法                                          |
 | native         | boolean | 是否为原生方法                                          |
 | accessModifier | string  | 访问修饰符，取值可以为 `public`、`protected`、`private` |
 

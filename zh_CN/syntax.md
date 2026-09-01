@@ -77,7 +77,7 @@ MetadataTerm ::= GeneralizedIdentifier [ SimpleStringLiteral ];
 FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
 
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.' '*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
-Type ::= Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ] [ '?' ];
+Type ::= ('byte' | 'short' | 'int' | 'long' | 'float' | 'double' | 'bool' | 'string' | Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ]) [ '?' ];
 Parameter ::= Identifier ':' Type;
 
 GenericParameterList ::= Identifier (',' Identifier)*;

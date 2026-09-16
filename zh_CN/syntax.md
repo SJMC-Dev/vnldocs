@@ -72,7 +72,7 @@ InterfaceDeclaration ::= 'interface' Identifier [ '<' GenericParameterList '>' ]
 EnumDeclaration ::= 'enum' Identifier [ '<' GenericParameterList '>' ] EnumBody;
 TypeAliasDeclaration ::= 'type' Identifier [ '<' GenericParameterList '>' ] '=' Type;
 ImportPath ::= Identifier ('.' Identifier)* [ '.' '*' | 'as' Identifier | '{' ImportPathList '}' ];
-ExportList ::= Identifier [ 'as' Identifier ] (',' Identifier [ 'as' Identifier ])*;
+ExportList ::= Identifier (',' Identifier)*;
 MetadataTerm ::= GeneralizedIdentifier [ SimpleStringLiteral ];
 FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
 
@@ -191,15 +191,10 @@ import vanillang.ui.{ self, TextDisplayUi as TDU, Button as Btn }
 
 ### 模块导出声明
 
-模块导出声明用于导出一个标识符，可以使用 `as` 关键字为导出的标识符指定一个别名，指定别名后，在 `import` 声明中只能使用别名导入该标识符，不能使用原名导入该标识符。
-
-下面是一些模块导出声明的示例：
+模块导出声明用于导出一个标识符，不能使用别名导出：
 
 ```vanillang
-export Player
-export Player as P
-export add as sum
-export Player, add as sum
+export Player, add
 ```
 
 ## 表达式

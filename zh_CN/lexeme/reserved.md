@@ -10,18 +10,15 @@
 | `command`                    | 用于声明内联命令块                                                                                                                                                 |
 | `async`、`await`             | 用于异步控制                                                                                                                                                       |
 | `generator`、`yield`、`from` | 用于生成器语法                                                                                                                                                     |
-| `protected`                  | 用于对子类可见的访问控制                                                                                                                                           |
 | `abstract`                   | 暂时不打算加入抽象类，但未来可能加入                                                                                                                               |
 | `decorator`、`decorate`      | 用于声明和调用装饰器                                                                                                                                               |
 | `record`                     | 用于声明一个纯数据类，留作语法糖                                                                                                                                   |
-| `try`、`catch`、`finally`    | 用于异常处理                                                                                                                                                       |
-| `throw`                      | 用于抛出异常                                                                                                                                                       |
 | `panic`                      | 用于强制终止数据包运行                                                                                                                                             |
 | `assert`                     | 用于断言检查                                                                                                                                                       |
 | `typeof`                     | 用于获取一个值的类型，返回字符串                                                                                                                                   |
-| `defer`                      | 用于声明一个在当前作用域结束时执行的代码块                                                                                                                         |
+| `defer`                      | 用于声明一个在当前作用域结束时执行的语句                                                                                                                           |
 | `asset`                      | 用于声明一类数据包或资源包中的静态资源，保留给 Vanillang 2.0 使用                                                                                                  |
 | `define`                     | 用于定义一个数据包或资源包中的静态资源，保留给 Vanillang 2.0 使用                                                                                                  |
-| `!.`                         | 非空断言运算符，用于访问 Optional\<T\> 对象的属性或方法，如果对象为 none 则抛出异常                                                                                |
-| `!`                          | 非空断言运算符，用于获取 Optional\<T\> 包装的对象，如果对象为 none 则抛出异常                                                                                      |
+| `!.`                         | 非空断言运算符，用于访问 Optional\<T\> 对象的属性或方法，如果对象为 none 则 panic                                                                                  |
+| `!`                          | 非空断言运算符，用于获取 Optional\<T\> 包装的对象，如果对象为 none 则 panic                                                                                        |
 | `...`                        | Rest 参数或 Spread 操作符                                                                                                                                          |

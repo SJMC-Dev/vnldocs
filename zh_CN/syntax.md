@@ -247,7 +247,7 @@ MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpr
 UnaryExpression ::= [ '!' | '~' | '-' | '+' ] ExponentialExpression;
 ExponentialExpression ::= PostfixExpression [ '**' UnaryExpression ];
 PostfixExpression ::= PrimaryExpression ((('.' | '?.') GeneralizedIdentifier) | ('(' [ ArgumentList ] ')') | ('[' Expression ']'))*;
-PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'super';
+PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'super' | 'none';
 
 Literal ::= Number | Char | String | Boolean | ListLikeLiteral | DictLiteral | Selector;
 

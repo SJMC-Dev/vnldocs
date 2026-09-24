@@ -81,7 +81,7 @@ MetadataTerm ::= GeneralizedIdentifier [ SimpleStringLiteral ];
 FunctionSignature ::= 'func' Identifier '(' [ ParameterList ] ')' ['->' (Type | 'void')];
 
 RelativeImportPath ::= (Identifier | 'parent') ('.' (Identifier | 'parent'))* [ '.' '*' | 'as' Identifier | '{' RelativeImportPathList '}' ];
-Type ::= ('byte' | 'short' | 'int' | 'long' | 'float' | 'double' | 'bool' | 'string' | Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ]) [ '?' ];
+Type ::= (PrimitiveType | Identifier ('.' Identifier)* [ '<' GenericArgumentList '>' ]) [ '?' ];
 Parameter ::= Identifier ':' Type;
 
 GenericParameterList ::= Identifier (',' Identifier)*;
@@ -247,9 +247,10 @@ MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpr
 UnaryExpression ::= [ '!' | '~' | '-' | '+' ] ExponentialExpression;
 ExponentialExpression ::= PostfixExpression [ '**' UnaryExpression ];
 PostfixExpression ::= PrimaryExpression ((('.' | '?.') GeneralizedIdentifier) | ('(' [ ArgumentList ] ')') | ('[' Expression ']'))*;
-PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | 'this' | 'super' | 'none';
+PrimaryExpression ::= '(' Expression ')' | Literal | Identifier | PrimitiveType | 'this' | 'super' | 'none';
 
 Literal ::= Number | Char | String | Boolean | ListLikeLiteral | DictLiteral | Selector;
+PrimitiveType ::= 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' | 'bool' | 'string'
 
 String ::= StringLiteral [ (StringLiteral | Interpolation)* ];
 Boolean ::= 'true' | 'false';

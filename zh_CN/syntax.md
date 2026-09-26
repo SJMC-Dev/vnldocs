@@ -249,7 +249,7 @@ ExponentialExpression ::= PostfixExpression [ '**' UnaryExpression ];
 PostfixExpression ::= PrimaryExpression ((('.' | '?.') GeneralizedIdentifier) | ('(' [ ArgumentList ] ')') | ('[' Expression ']'))*;
 PrimaryExpression ::= '(' Expression ')' | Literal | IdentifierLike | PrimitiveType | 'this' | 'super' | 'none';
 
-IdentifierLike ::= Identifier { if peek() is not a type declaration else } Identifier [ '<' IdentifierLike [ ',' IdentifierLike ]* '>' ] 
+IdentifierLike ::= Identifier { if peek() is not a type declaration else } Identifier [ '<' PostfixExpression [ ',' PostfixExpression ]* '>' ] 
 Literal ::= Number | Char | String | Boolean | ListLikeLiteral | DictLiteral | Selector;
 PrimitiveType ::= 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' | 'bool' | 'string'
 

@@ -246,7 +246,7 @@ AdditiveExpression ::= MultiplicativeExpression (('+' | '-') MultiplicativeExpre
 MultiplicativeExpression ::= UnaryExpression (('*' | '/' | '//' | '%') UnaryExpression)*;
 UnaryExpression ::= [ '!' | '~' | '-' | '+' ] ExponentialExpression;
 ExponentialExpression ::= PostfixExpression [ '**' UnaryExpression ];
-PostfixExpression ::= PrimaryExpression ((('.' | '?.') GeneralizedIdentifier) | ('(' [ ArgumentList ] ')') | ('[' Expression ']'))*;
+PostfixExpression ::= PrimaryExpression (('.' (GeneralizedIdentifier | IdentifierLike)) | ('?.' GeneralizedIdentifier) | ('(' [ ArgumentList ] ')') | ('[' Expression ']'))*;
 PrimaryExpression ::= '(' Expression ')' | Literal | IdentifierLike | PrimitiveType | 'this' | 'super' | 'none';
 
 IdentifierLike ::= Identifier { if peek() is not a type declaration else } Identifier [ '<' PostfixExpression [ ',' PostfixExpression ]* '>' ] 

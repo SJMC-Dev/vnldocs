@@ -8,7 +8,7 @@ Vanillang 模块接口文件以 `.vni` 作为后缀，其本质是一个 JSON �
 
 | 属性     | 类型   | 解释                                                                                                                                                                                                           |
 | -------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| category | string | 该标识符的类别，取值可以为 `let`、`func`、`class`、`interface`、`enum`、`typealias`、`property`、`method`、`parameter`、`enummember`、`enumvalue` 、`imported`                                                 |
+| category | string | 该标识符的类别，取值可以为 `let`、`func`、`class`、`interface`、`enum`、`typealias`、`property`、`method`、`parameter`、`enummember`、`enumvalue` 、`imported`、`constructor`、`operator`                      |
 | metadata | object | 元数据信息，仅当标识符具有元数据且不为 `imported`、`enummember`、`enumvalue`、`parameter` 时存在，键名为元数据项，值为 string 类型或 null，对于需要提供元数据值的元数据项，其值为 string 类型，否则其值为 null |
 
 根据 `category` 值的不同，其余属性的值也有所不同。                      |
@@ -29,21 +29,24 @@ Vanillang 模块接口文件以 `.vni` 作为后缀，其本质是一个 JSON �
 
 ### class 类别
 
-| 属性                  | 类型          | 解释                                   |
-| --------------------- | ------------- | -------------------------------------- |
-| baseClass             | string        | 基类的名称，若无基类则为 null          |
-| implementedInterfaces | array<string> | 实现的接口列表，若无实现接口则为 []    |
-| final                 | boolean       | 是否为 final 类                        |
-| genericParameters     | array<string> | 泛型参数列表                           |
-| properties            | object        | 成员属性，由 `property` 类别的对象组成 |
-| methods               | object        | 成员方法，由 `method` 类别的对象组成   |
+| 属性                  | 类型          | 解释                                     |
+| --------------------- | ------------- | ---------------------------------------- |
+| baseClass             | string        | 基类的名称，若无基类则为 null            |
+| implementedInterfaces | array<string> | 实现的接口列表，若无实现接口则为 []      |
+| final                 | boolean       | 是否为 final 类                          |
+| genericParameters     | array<string> | 泛型参数列表                             |
+| properties            | object        | 成员属性，由 `property` 类别的对象组成   |
+| methods               | object        | 成员方法，由 `method` 类别的对象组成     |
+| constructors          | object        | 构造器，由 `constructor` 类别的对象组成  |
+| operators             | object        | 运算符重载，由 `operator` 类别的对象组成 |
 
 ### interface 类别
 
-| 属性              | 类型          | 解释                                 |
-| ----------------- | ------------- | ------------------------------------ |
-| genericParameters | array<string> | 泛型参数列表                         |
-| methods           | object        | 成员方法，由 `method` 类别的对象组成 |
+| 属性              | 类型          | 解释                                     |
+| ----------------- | ------------- | ---------------------------------------- |
+| genericParameters | array<string> | 泛型参数列表                             |
+| methods           | object        | 成员方法，由 `method` 类别的对象组成     |
+| operators         | object        | 运算符重载，由 `operator` 类别的对象组成 |
 
 ### enum 类别
 
@@ -100,3 +103,18 @@ Vanillang 模块接口文件以 `.vni` 作为后缀，其本质是一个 JSON �
 | 属性   | 类型   | 解释               |
 | ------ | ------ | ------------------ |
 | source | string | 导入标识符的限定名 |
+
+### constructor 类别
+
+| 属性           | 类型   | 解释                                                    |
+| -------------- | ------ | ------------------------------------------------------- |
+| parameters     | object | 构造器参数，其属性应该是 `parameter` 类别的对象         |
+| accessModifier | string | 访问修饰符，取值可以为 `public`、`protected`、`private` |
+
+### operator 类别
+
+| 属性           | 类型   | 解释                                                    |
+| -------------- | ------ | ------------------------------------------------------- |
+| returnType     | string | 返回值类型，格式与源代码的类型语法一致                  |
+| parameters     | object | 参数，其属性应该是 `parameter` 类别的对象               |
+| accessModifier | string | 访问修饰符，取值可以为 `public`、`protected`、`private` |

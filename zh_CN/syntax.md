@@ -64,7 +64,7 @@ VariableDeclaration ::= VariableDeclarationPrimary '=' Expression;
 FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
 PropertyDeclaration ::= Identifier ':' Type ['=' Expression];
-InterfaceMethodDeclaration ::= [ Metadata ] FunctionSignature;
+InterfaceMethodDeclaration ::= [ Metadata ] (FunctionSignature | OperatorOverloadingSignature);
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
 VariableDeclarationPrimary ::= 'let' Identifier [ ':' Type ];
@@ -94,12 +94,16 @@ InterfaceBody ::= '{' InterfaceMethodDeclaration* '}';
 EnumBody ::= '{' EnumMemberDeclaration* '}';
 ImportPathItem ::= 'self' [ 'as' Identifier ] | ImportPath | '*';
 
-ClassMember ::= [ Metadata ] (([ 'private' | 'public' ] ([ 'static' ] PropertyDeclaration | [ 'static' | 'override' ] FunctionDeclaration)) | Constructor);
-Constructor ::= 'init' '(' [ ParameterList ] ')' FunctionBody
+ClassMember ::= [ Metadata ] (([ 'private' | 'public' ] ([ 'static' ] PropertyDeclaration | [ 'static' | 'override' ] FunctionDeclaration)) | Constructor | OperatorOverloading);
+Constructor ::= 'init' '(' [ ParameterList ] ')' FunctionBody;
+OperatorOverloading ::= OperatorOverloadingSignature FunctionBody;
+OperatorOverloadingSignature ::= `op` OverloadableOperator '(' [ ParameterList ] ')' [ '->' (Type | 'void')];
 EnumMemberDeclaration ::= [ Metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
 
 EnumAssociatedValueList ::= EnumAssociatedValue (',' EnumAssociatedValue)*;
 EnumAssociatedValue ::= Identifier ':' Type;
+
+OverloadableOperator ::= '+' | '-' | '*' | '/' | '//' | '%' | '**' | '==' | '!=' | '<' | '>' | '<=' | '>=' | '&' | '\|' | '^' | '~' | '<<' | '>>' | '>>>' | ('(' ')') | ('[' ']') | '..';
 ```
 
 ### 变量声明
@@ -219,7 +223,7 @@ Vanillang 表达式是由一个或多个操作数和一个或多个运算符组�
 | 9      | `\|`                                                                                            | 左结合   |
 | 10     | `..`                                                                                            | 左结合   |
 | 11     | `<`、`<=`、`>`、`>=`、`instanceof`                                                              | 左结合   |
-| 12     | `==`、`!=`                                                                                      | 左结合   |
+| 12     | `==`、`!=`、`===`、`!==`                                                                        | 左结合   |
 | 13     | `&&`                                                                                            | 左结合   |
 | 14     | `\|\|`                                                                                          | 左结合   |
 | 15     | `??`                                                                                            | 左结合   |
@@ -235,7 +239,7 @@ ConditionalExpression ::= NullishCoalescingExpression [ '?' AssignmentExpression
 NullishCoalescingExpression ::= LogicalOrExpression ('??' LogicalOrExpression)*;
 LogicalOrExpression ::= LogicalAndExpression ('||' LogicalAndExpression)*;
 LogicalAndExpression ::= EqualityExpression ('&&' EqualityExpression)*;
-EqualityExpression ::= RelationalExpression (('==' | '!=') RelationalExpression)*;
+EqualityExpression ::= RelationalExpression (('==' | '!=' | '===' | '!==') RelationalExpression)*;
 RelationalExpression ::= RangeExpression (('<' | '<=' | '>' | '>=' | 'instanceof') RangeExpression)*;
 RangeExpression ::= (BitwiseOrExpression [ '..' [ BitwiseOrExpression ] ]) | ('..' BitwiseOrExpression);
 BitwiseOrExpression ::= BitwiseXorExpression ('|' BitwiseXorExpression)*;

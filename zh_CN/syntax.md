@@ -94,7 +94,7 @@ InterfaceBody ::= '{' InterfaceMethodDeclaration* '}';
 EnumBody ::= '{' EnumMemberDeclaration* '}';
 ImportPathItem ::= 'self' [ 'as' Identifier ] | ImportPath | '*';
 
-ClassMember ::= [ Metadata ] [ 'private' | `protected` | 'public' ] (([ 'static' ] PropertyDeclaration) | ([ 'static' | 'override' ] FunctionDeclaration) | Constructor | OperatorOverloading);
+ClassMember ::= [ Metadata ] [ 'private' | `protected` | 'public' ] (([ 'static' ] PropertyDeclaration) | ([ 'static' | 'override' ] FunctionDeclaration) | Constructor | ([ 'override' ] OperatorOverloading));
 Constructor ::= 'init' '(' [ ParameterList ] ')' FunctionBody;
 OperatorOverloading ::= OperatorOverloadingSignature FunctionBody;
 OperatorOverloadingSignature ::= `op` OverloadableOperator '(' [ ParameterList ] ')' [ '->' (Type | 'void')];

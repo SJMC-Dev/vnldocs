@@ -64,7 +64,7 @@ VariableDeclaration ::= VariableDeclarationPrimary '=' Expression;
 FunctionDeclaration ::= RegularFunctionDeclaration | NativeFunctionDeclaration;
 TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration | EnumDeclaration | TypeAliasDeclaration;
 PropertyDeclaration ::= Identifier ':' Type ['=' Expression];
-InterfaceMethodDeclaration ::= [ Metadata ] FunctionSignature;
+InterfaceMethodDeclaration ::= [ Metadata ] (FunctionSignature | OperatorOverloadingSignature);
 Metadata ::= 'metadata' '(' MetadataTerm (',' MetadataTerm)* ')';
 
 VariableDeclarationPrimary ::= 'let' Identifier [ ':' Type ];
@@ -94,12 +94,16 @@ InterfaceBody ::= '{' InterfaceMethodDeclaration* '}';
 EnumBody ::= '{' EnumMemberDeclaration* '}';
 ImportPathItem ::= 'self' [ 'as' Identifier ] | ImportPath | '*';
 
-ClassMember ::= [ Metadata ] (([ 'private' | 'public' ] ([ 'static' ] PropertyDeclaration | [ 'static' | 'override' ] FunctionDeclaration)) | Constructor);
-Constructor ::= 'init' '(' [ ParameterList ] ')' FunctionBody
+ClassMember ::= [ Metadata ] [ 'private' | `protected` | 'public' ] (([ 'static' ] PropertyDeclaration) | ([ 'static' | 'override' ] FunctionDeclaration) | Constructor | ([ 'override' ] OperatorOverloading));
+Constructor ::= 'init' '(' [ ParameterList ] ')' FunctionBody;
+OperatorOverloading ::= OperatorOverloadingSignature FunctionBody;
+OperatorOverloadingSignature ::= `op` OverloadableOperator '(' [ ParameterList ] ')' [ '->' (Type | 'void')];
 EnumMemberDeclaration ::= [ Metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
 
 EnumAssociatedValueList ::= EnumAssociatedValue (',' EnumAssociatedValue)*;
 EnumAssociatedValue ::= Identifier ':' Type;
+
+OverloadableOperator ::= '+' | '-' | '*' | '/' | '//' | '%' | '**' | '==' | '!=' | '<' | '>' | '<=' | '>=' | '&' | '\|' | '^' | '~' | '<<' | '>>' | '>>>' | ('(' ')') | ('[' ']') | '..';
 ```
 
 ### 变量声明
@@ -162,7 +166,7 @@ type NamespaceId = string
 
 ### 属性声明
 
-类成员属性声明用于声明一个类的成员属性，可以使用 `private` 或 `public` 关键字指定访问修饰符，使用 `static` 关键字指定静态属性。类成员属性必须包含一个类型注解，对于静态属性，必须包含一个初始化表达式；对于实例属性，不应该包含初始化表达式，必须在构造函数中进行初始化。
+类成员属性声明用于声明一个类的成员属性，可以指定访问修饰符，使用 `static` 关键字指定静态属性。类成员属性必须包含一个类型注解，对于静态属性，必须包含一个初始化表达式；对于实例属性，不应该包含初始化表达式，必须在构造函数中进行初始化。
 
 下面是一些类成员属性声明的示例：
 
@@ -176,7 +180,7 @@ class Player {
 
 ### 方法声明
 
-类成员方法声明类似于函数声明，用于声明一个类的成员方法，可以使用 `private` 或 `public` 关键字指定访问修饰符，使用 `static` 关键字指定静态方法。类成员方法必须包含一个参数列表，参数列表中的每个参数都必须包含一个类型注解，参数列表可以是空的。类成员方法可以选择性地包含一个返回类型注解，如果没有指定返回类型，则由编译器根据方法体中的 `return` 语句推断返回类型，如果方法体中没有 `return` 语句，则返回类型为 `void`。对于实例方法，方法体内可以使用 `this` 关键字访问当前实例的成员属性和成员方法；对于静态方法，方法体内不能使用 `this` 关键字访问当前实例的成员属性和成员方法，但可以使用类名访问当前类的静态属性和静态方法。
+类成员方法声明类似于函数声明，用于声明一个类的成员方法，可以指定访问修饰符，使用 `static` 关键字指定静态方法。类成员方法必须包含一个参数列表，参数列表中的每个参数都必须包含一个类型注解，参数列表可以是空的。类成员方法可以选择性地包含一个返回类型注解，如果没有指定返回类型，则由编译器根据方法体中的 `return` 语句推断返回类型，如果方法体中没有 `return` 语句，则返回类型为 `void`。对于实例方法，方法体内可以使用 `this` 关键字访问当前实例的成员属性和成员方法；对于静态方法，方法体内不能使用 `this` 关键字访问当前实例的成员属性和成员方法，但可以使用类名访问当前类的静态属性和静态方法。
 
 ### 模块导入声明
 
@@ -219,7 +223,7 @@ Vanillang 表达式是由一个或多个操作数和一个或多个运算符组�
 | 9      | `\|`                                                                                            | 左结合   |
 | 10     | `..`                                                                                            | 左结合   |
 | 11     | `<`、`<=`、`>`、`>=`、`instanceof`                                                              | 左结合   |
-| 12     | `==`、`!=`                                                                                      | 左结合   |
+| 12     | `==`、`!=`、`===`、`!==`                                                                        | 左结合   |
 | 13     | `&&`                                                                                            | 左结合   |
 | 14     | `\|\|`                                                                                          | 左结合   |
 | 15     | `??`                                                                                            | 左结合   |
@@ -235,7 +239,7 @@ ConditionalExpression ::= NullishCoalescingExpression [ '?' AssignmentExpression
 NullishCoalescingExpression ::= LogicalOrExpression ('??' LogicalOrExpression)*;
 LogicalOrExpression ::= LogicalAndExpression ('||' LogicalAndExpression)*;
 LogicalAndExpression ::= EqualityExpression ('&&' EqualityExpression)*;
-EqualityExpression ::= RelationalExpression (('==' | '!=') RelationalExpression)*;
+EqualityExpression ::= RelationalExpression (('==' | '!=' | '===' | '!==') RelationalExpression)*;
 RelationalExpression ::= RangeExpression (('<' | '<=' | '>' | '>=' | 'instanceof') RangeExpression)*;
 RangeExpression ::= (BitwiseOrExpression [ '..' [ BitwiseOrExpression ] ]) | ('..' BitwiseOrExpression);
 BitwiseOrExpression ::= BitwiseXorExpression ('|' BitwiseXorExpression)*;

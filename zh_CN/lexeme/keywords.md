@@ -54,6 +54,7 @@ Vanillang 关键字具有特殊用途，不可作用标识符，下面的表格�
 | `final`      | 用于声明一个类不能被继承                                   | `final class World`                                                            |
 | `override`   | 用于标识一个成员函数覆盖了基类的同名函数                   | `override func getName() -> string`                                            |
 | `none`       | 用于实例化一个表示空值的 Optional\<T\> 对象                | `let optionalPlayer: Optional<Player> = none`                                  |
+| `op`         | 用于声明一个运算符重载函数                                 | `op +(other: Vec3) -> Vec3`                                                    |
 
 ## 字面量关键字
 

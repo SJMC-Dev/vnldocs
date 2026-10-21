@@ -96,7 +96,9 @@ ImportPathItem ::= 'self' [ 'as' Identifier ] | ImportPath | '*';
 
 ClassMember ::= [ Metadata ] [ 'private' | `protected` | 'public' ] (([ 'static' ] PropertyDeclaration) | ([ 'static' | 'override' ] FunctionDeclaration) | Constructor | ([ 'override' ] OperatorOverloading));
 Constructor ::= 'init' '(' [ ParameterList ] ')' FunctionBody;
-OperatorOverloading ::= OperatorOverloadingSignature FunctionBody;
+OperatorOverloading ::= RegularOperatorOverloading | NativeOperatorOverloading;
+RegularOperatorOverloading ::= OperatorOverloadingSignature FunctionBody;
+NativeOperatorOverloading ::= 'native' OperatorOverloadingSignature;
 OperatorOverloadingSignature ::= `op` OverloadableOperator '(' [ ParameterList ] ')' [ '->' (Type | 'void')];
 EnumMemberDeclaration ::= [ Metadata ] Identifier [ '(' [ EnumAssociatedValueList ] ')' ];
 

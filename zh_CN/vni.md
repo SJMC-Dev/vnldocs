@@ -115,8 +115,9 @@ Vanillang 模块接口文件以 `.vni` 作为后缀，其本质是一个 JSON �
 
 ### operator 类别
 
-| 属性           | 类型   | 解释                                                    |
-| -------------- | ------ | ------------------------------------------------------- |
-| returnType     | string | 返回值类型，格式与源代码的类型语法一致                  |
-| parameters     | object | 参数，其属性应该是 `parameter` 类别的对象               |
-| accessModifier | string | 访问修饰符，取值可以为 `public`、`protected`、`private` |
+| 属性           | 类型    | 解释                                                    |
+| -------------- | ------- | ------------------------------------------------------- |
+| returnType     | string  | 返回值类型，格式与源代码的类型语法一致                  |
+| parameters     | object  | 参数，其属性应该是 `parameter` 类别的对象               |
+| accessModifier | string  | 访问修饰符，取值可以为 `public`、`protected`、`private` |
+| native         | boolean | 是否为原生重载实现                                      |
